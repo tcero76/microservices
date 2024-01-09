@@ -17,10 +17,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'corretto'
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew clean build
       - name: Get the version
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:10})
@@ -29,5 +25,9 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.dockerhub_username }}
           DOCKER_PASSWORD: ${{ secrets.dockerhub_password }}
         run : echo "$DOCKER_PASSWORD" # | docker login -u="$DOCKER_USERNAME" --password-stdin
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#      - name: Build with Gradle
+#        run: ./gradlew clean build
 #      - name: Push the Docker image
 #        run: gradle :app:dockerPush
