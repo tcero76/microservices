@@ -21,7 +21,7 @@ jobs:
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:10})
       - name: Docker login
-        env:
+        with:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
           DOCKER_TOKEN: ${{ env.DOCKER_TOKEN }}
