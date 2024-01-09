@@ -29,5 +29,5 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.dockerhub_username }}
           DOCKER_PASSWORD: ${{ secrets.dockerhub_password }}
         run : docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" docker.io
-      - name: Build the Docker image
+      - name: Push the Docker image
         run: gradle :app:dockerPush
