@@ -32,4 +32,4 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
       - name: Push the Docker image
-        run: gradle :app:dockerPush
+        run: ./gradlew :app:dockerPush
