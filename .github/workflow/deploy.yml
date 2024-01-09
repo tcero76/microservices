@@ -1,0 +1,33 @@
+
+
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ deployment ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew clean build
+      - name: Get the version
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:10})
+      - name: Docker login
+        env:
+          DOCKER_USERNAME: ${{ secrets.dockerhub_username }}
+          DOCKER_PASSWORD: ${{ secrets.dockerhub_password }}
+        run : docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" docker.io
+      - name: Build the Docker image
+        run: gradle :app:dockerPush
