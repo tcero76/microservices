@@ -1,0 +1,24 @@
+[versions]
+kotlinVersion="1.9.21"
+springBootVersion="3.2.1"
+springCloudVersion="Hoxton.SR3"
+flyway="10.4.1"
+postgres="42.2.16"
+
+[libraries]
+spring-boot = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBootVersion"}
+spring-boot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springBootVersion"}
+spring-cloud = { module = "org.springframework.cloud:spring-cloud-server-config", version.ref = "springCloudVersion"}
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinVersion"}
+spring-docker = { module = "org.springframework.boot:spring-boot-docker-compose", version = "3.1.1"}
+flyway-publish = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+
+[plugins]
+jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
+sk = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlinVersion"}
+spring-boot = { id = "org.springframework.boot", version.ref = "springBootVersion"}
+flyway = { id = "org.flywaydb.flyway", version = "9.22.3"}
+
+
+#id("io.spring.dependency-management") version "1.1.4"
