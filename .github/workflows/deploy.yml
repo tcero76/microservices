@@ -28,6 +28,6 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.dockerhub_username }}
           DOCKER_PASSWORD: ${{ secrets.dockerhub_password }}
-        run : echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin docker.io
+        run : echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin
       - name: Push the Docker image
         run: gradle :app:dockerPush
