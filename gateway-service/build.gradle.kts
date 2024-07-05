@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.spring.cloud.discovery.client)
     implementation(libs.kotlin.logging)
     implementation(libs.spring.boot.actuator)
+    implementation(libs.spring.cloud.config.client)
     implementation("io.micrometer:micrometer-registry-prometheus:1.12.2")
     implementation(project(":app-config-data"))
     testImplementation("org.jetbrains.kotlin:kotlin-test")

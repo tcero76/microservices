@@ -12,7 +12,7 @@ spring:
           uri: https://github.com/tcero76/microservices
           searchPaths: config-server-repo
           default-label: master
-          username:
+          username: tcero76
           password: '{cipher}dcbf148c909933b8513e2210cbfc1bbc1e6262f4548e28fd9ab95f957dd4e503'
           clone-on-start: true
   security:

@@ -28,6 +28,7 @@ gateway-router:
       - /@react-refresh/**
       - /node_modules/**
       - /authorized**
+      - /login
     uri: http://localhost:5173
   frontend-prod:
     path:
@@ -38,7 +39,6 @@ gateway-router:
     path:
       - /oauth2/authorize
       - /oauth2/token
-      - /login
     uri: http://localhost:8000
   resource-server:
     path:

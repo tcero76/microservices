@@ -23,7 +23,7 @@ services:
     environment:
       - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - EUREKA_URI=http://discovery-service:8761/eureka/
-      - SPRING_CONFIG_IMPORT=optional:configserver:http://root:s3cr3t@config-server:8888
+      - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
       - ENCRYPT_KEY=${ENCRYPT_KEY}
     depends_on:
       - config-server
@@ -44,6 +44,7 @@ services:
       - GATEWAY_ROUTER_AUTHORIZATION_SERVER_URI=http://auth-server:8000
       - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
       - EUREKA_URI=http://discovery-service:8761/eureka/
+      - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
     ports:
       - "80:80"
     networks:
