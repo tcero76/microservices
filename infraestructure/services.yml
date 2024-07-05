@@ -1,0 +1,14 @@
+version: '3'
+services:
+  auth-server:
+    image: tcero76/authorization-server-service:${VERSION}
+  resource-server:
+    image: tcero76/resource-service:${VERSION}
+  gateway:
+    image: tcero76/gateway-service:${VERSION}
+  front:
+    image: node:22.3.0
+  discovery:
+    image: tcero76/discovery-service:${VERSION}
+  config-server:
+    image: tcero76/config-server:${VERSION}

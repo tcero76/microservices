@@ -1,0 +1,17 @@
+version: '3.8'
+networks:
+  application:
+    driver: bridge
+volumes:
+  postgres:
+    name: "postgres"
+    driver: local
+  data01:
+    name: "elastic1"
+    driver: local
+  data02:
+    name: "elastic2"
+    driver: local
+  data03:
+    name: "elastic3"
+    driver: local

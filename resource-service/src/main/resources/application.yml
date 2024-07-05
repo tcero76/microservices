@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: resource-service
+#  main:
+#    web-application-type: none
+#  profiles:
+#    active: resource_service
+  cloud:
+    config:
+      label: master
+      name: config-server-resource_service
+  config:
+    import: optional:configserver:http://'{cipher}cef9d6f4842dce75056808727a1ddb3614f5d890d0d21d48df63cda510064beb':'{cipher}cecc833fb49b2504055cd5527af5b7a873f9f6dff79596721388aecd1200e8f3'@localhost:8888
+log:
+  app-name: resource-service
+

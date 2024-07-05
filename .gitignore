@@ -1,0 +1,9 @@
+infraestructure/volumes/**
+.idea/**
+.gradle/
+frontend/frontend/node_modules/**
+infraestructure/grafana/**
+infraestructure/docker-logs/**
+infraestructure/prometheus/**
+**/build/**
+**/logs/**

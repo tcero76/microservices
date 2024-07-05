@@ -1,0 +1,27 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      allow-override: true
+      override-none: true
+      server:
+        git:
+          uri: https://github.com/tcero76/microservices
+          searchPaths: config-server-repo
+          default-label: master
+          username:
+          password: '{cipher}dcbf148c909933b8513e2210cbfc1bbc1e6262f4548e28fd9ab95f957dd4e503'
+          clone-on-start: true
+  security:
+    user:
+      name: '{cipher}8dfb97cffe7cf10b7edd9c6c7357ba61cc6b4736c3e1378492784abbc87aa5e8'
+      password: '{cipher}96cea24f18f1c1101e0584fedcd4b31b630bcd34a8957778a4283047bd0c7ba3'
+log:
+  app-name: config-server
+logging:
+  level:
+    ROOT: INFO
+    org.spring.framework.cloud.config: DEBUG

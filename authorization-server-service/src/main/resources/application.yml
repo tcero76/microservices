@@ -1,0 +1,11 @@
+server:
+  port: ${PORT}
+  forward-headers-strategy: framework
+container:
+  hostname: ${HOSTNAME}
+  port: ${PORT}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus

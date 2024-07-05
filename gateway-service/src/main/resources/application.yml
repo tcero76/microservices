@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+server:
+  port: 80
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+gateway-router:
+  frontend-dev:
+    path:
+      - /
+      - /assets/**
+      - /callback
+      - /src/**
+      - /@vite/**
+      - /@react-refresh/**
+      - /node_modules/**
+      - /authorized**
+    uri: http://localhost:5173
+  frontend-prod:
+    path:
+      - /
+      - /assets/**
+    uri: http://localhost:8082
+  authorization-server:
+    path:
+      - /oauth2/authorize
+      - /oauth2/token
+      - /login
+    uri: http://localhost:8000
+  resource-server:
+    path:
+      - /api/health
+    uri: http://localhost:8081
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus

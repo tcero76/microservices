@@ -1,0 +1,92 @@
+version: '3.8'
+services:
+  auth-server:
+    container_name: authorizationserver
+    hostname: auth-server
+    environment:
+      - PORT=8000
+    profiles:
+      - front
+    networks:
+      - ${GLOBAL_NETWORK}
+  resource-server:
+    container_name: resourceserver
+    profiles:
+      - front
+    user: root
+    entrypoint: ["check-config-server-started.sh"]
+    volumes:
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
+      - "./docker-logs:/workspace/resource-service/logs"
+    ports:
+      - 8081:8081
+    environment:
+      - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
+      - EUREKA_URI=http://discovery-service:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://root:s3cr3t@config-server:8888
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
+    depends_on:
+      - config-server
+      - postgres
+    networks:
+      - ${GLOBAL_NETWORK}
+  gateway:
+    container_name: gateway
+    user: root
+    entrypoint: ["check-config-server-started.sh"]
+    volumes:
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
+    profiles:
+      - front
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - GATEWAY_ROUTER_FRONTEND_DEV_URI=http://front:5173
+      - GATEWAY_ROUTER_AUTHORIZATION_SERVER_URI=http://auth-server:8000
+      - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
+      - EUREKA_URI=http://discovery-service:8761/eureka/
+    ports:
+      - "80:80"
+    networks:
+      - ${GLOBAL_NETWORK}
+    depends_on:
+      - front
+      - postgres
+  front:
+    container_name: front
+    profiles:
+      - front
+    hostname: front
+    working_dir: /app
+    ports:
+      - 5173:5173
+    volumes:
+      - ../frontend/frontend/:/app
+    command: npm run dev
+    environment:
+      - VITE_APP_REDIRECT_URL=http://localhost
+    networks:
+      - ${GLOBAL_NETWORK}
+  discovery:
+    container_name: discovery
+    profiles:
+      - front
+      - base
+    hostname: discovery-service
+    ports:
+      - 8761:8761
+    networks:
+      - ${GLOBAL_NETWORK}
+  config-server:
+    container_name: config-server
+    volumes:
+      - "./docker-logs:/workspace/config-server/logs"
+    profiles:
+      - front
+      - base
+    hostname: config-server
+    environment:
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
+    ports:
+      - 8888:8888
+    networks:
+      - ${GLOBAL_NETWORK}

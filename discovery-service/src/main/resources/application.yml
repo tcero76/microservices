@@ -1,0 +1,23 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-discovery-service
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  instance:
+    appname: service-registry-cluster
+  server:
+    enable-self-preservation: true
+    expected-client-renewal-interval-seconds: 3
+    eviction-interval-timer-in-ms: 2000
+
+#logging:
+#  level:
+#    ROOT: DEBUG
+#    com.netflix.eureka: OFF
+#    com.netflix.discovery: OFF
