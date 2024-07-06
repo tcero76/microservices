@@ -55,3 +55,14 @@ export function getInfoFromResourceServer() {
 function postInfoFromAccessToken(res:AxiosResponse) {
     alert(res.data)
 }
+
+export function postLoginForm() {
+  axios({
+    method: 'post', 
+    url:`${import.meta.env.VITE_APP_REDIRECT_URL}/loginPost`,
+    data: {
+      username: 'sergey',
+      password: 'password'
+    }
+  })
+}

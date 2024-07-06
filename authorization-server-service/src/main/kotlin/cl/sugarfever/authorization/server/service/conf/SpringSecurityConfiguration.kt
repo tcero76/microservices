@@ -26,7 +26,7 @@ class SpringSecurityConfiguration {
     @Bean
     fun configureSecurityFilterChain(http:HttpSecurity):SecurityFilterChain {
         http.run { authorizeHttpRequests { it.anyRequest().permitAll() } }
-            .formLogin(Customizer.withDefaults())
+            .formLogin { it.loginProcessingUrl("/loginPost") }
 //            .logout { it
 //                .logoutUrl("/logout")
 //                .deleteCookies("JSESSIONID")

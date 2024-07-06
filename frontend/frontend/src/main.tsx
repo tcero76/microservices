@@ -5,6 +5,9 @@ import Home from './Home'
 import Login from './Login'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import './scss/style.scss'
+import * as bootstrap from 'bootstrap'
+
 const router = createBrowserRouter([
   {
     path: "/",
