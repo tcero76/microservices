@@ -34,13 +34,12 @@ import java.util.*
 @Configuration
 class AuthorizationServerConfiguration {
 
-    @Autowired
-    var environment:Environment? = null
-
     @Value("\${container.port}")
     var port:String? = ""
     @Value("\${container.hostname}")
     var hostname:String? = ""
+    @Value("\${external.port}")
+    var externalPort:String? = ""
 
     @Bean
     fun registeringClientRepository():RegisteredClientRepository {
@@ -50,9 +49,8 @@ class AuthorizationServerConfiguration {
             .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .clientSecretExpiresAt(Instant.now().plusSeconds(86400))
-            .redirectUri("http://localhost/login/oauth2/code/users-client-oidc")
-            .redirectUri("http://localhost/authorized")
+            .redirectUri("http://localhost:${externalPort}/login/oauth2/code/users-client-oidc")
+            .redirectUri("http://localhost:${externalPort}/authorized")
             .scope(OidcScopes.OPENID)
             .scope("read")
             .clientSettings(ClientSettings.builder()

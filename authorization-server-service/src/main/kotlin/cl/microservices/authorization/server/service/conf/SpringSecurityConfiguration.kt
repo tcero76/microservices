@@ -1,6 +1,7 @@
 package cl.sugarfever.authorization.server.service.conf
 
-import jakarta.servlet.http.HttpServletResponse
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
@@ -15,27 +16,25 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler
+import java.time.Instant
 import java.util.stream.Collectors
 
 
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 class SpringSecurityConfiguration {
-
+    @Value("\${container.port}")
+    var port:String? = ""
+    @Value("\${container.hostname}")
+    var hostname:String? = ""
     @Bean
     fun configureSecurityFilterChain(http:HttpSecurity):SecurityFilterChain {
         http.run { authorizeHttpRequests { it.anyRequest().permitAll() } }
-            .formLogin { it.loginProcessingUrl("/loginPost") }
-//            .logout { it
-//                .logoutUrl("/logout")
-//                .deleteCookies("JSESSIONID")
-//            }
+            .formLogin(Customizer.withDefaults())
         return http.build()
     }
 
-    @Bean
-    fun users(): UserDetailsService {
+    fun users():UserDetailsService {
         val encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
         val user = User.withUsername("sergey")
             .password(encoder.encode("password"))
@@ -45,7 +44,7 @@ class SpringSecurityConfiguration {
     }
 
     @Bean
-    fun jwtCustomizer(): OAuth2TokenCustomizer<JwtEncodingContext> {
+    fun jwtCustomizer():OAuth2TokenCustomizer<JwtEncodingContext> {
         return OAuth2TokenCustomizer { context ->
             if (context.tokenType === OAuth2TokenType.ACCESS_TOKEN) {
                 val principal = context.getPrincipal<Authentication>()
@@ -53,6 +52,8 @@ class SpringSecurityConfiguration {
                     .map { it.authority }
                     .collect(Collectors.toSet())
                 context.claims.claim("roles", authorities)
+                context.claims.issuer("http://${hostname}:${port}")
+                context.claims.expiresAt(Instant.now().plusSeconds(86400000))
             }
         }
     }

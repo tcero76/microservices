@@ -1,4 +1,4 @@
-package cl.sugarfever.authorization.server.service
+package cl.sugarfever
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
