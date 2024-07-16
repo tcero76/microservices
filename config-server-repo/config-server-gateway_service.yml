@@ -44,6 +44,7 @@ gateway-router:
     path:
       - /api/health
       - /api/payments
+      - /api/isAuthenticated
     uri: http://localhost:8081
 management:
   endpoints:
