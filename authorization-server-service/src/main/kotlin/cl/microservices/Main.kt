@@ -1,4 +1,4 @@
-package cl.sugarfever
+package cl.microservices
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

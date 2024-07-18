@@ -1,24 +1,23 @@
 package cl.microservices.postgres.services.repo
 
-import cl.microservices.postgres.model.UserEntity
-import cl.microservices.postgres.services.repo.UserEntityRepo
+import cl.microservices.postgres.model.Customer
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
 import java.sql.Timestamp
 import java.time.Instant
+import java.util.UUID
 
 @DataJpaTest
-class UserEntityTests(@Autowired val userEntityRepo: UserEntityRepo) {
+class CustomerTests(@Autowired val userEntityRepo: UserEntityRepo) {
 
     @Test
     @DisplayName("JUnit test for findAll UserEntity")
     fun givenUserEntity_whenFindAll_thenUserEntityList() {
-        val userEntity1 = UserEntity(
-            "1",
+        val customer1 = Customer(
+            UUID.randomUUID(),
             "leolastra@hotmail.com",
             "none",
             true,
@@ -34,8 +33,8 @@ class UserEntityTests(@Autowired val userEntityRepo: UserEntityRepo) {
             "",
             0
         )
-        val userEntity2 = UserEntity(
-            "2",
+        val customer2 = Customer(
+            UUID.randomUUID(),
             "leonardo.lastra@gmail.com",
             "none",
             true,
@@ -52,8 +51,8 @@ class UserEntityTests(@Autowired val userEntityRepo: UserEntityRepo) {
             0
         )
 
-        userEntityRepo.save(userEntity1)
-        userEntityRepo.save(userEntity2)
+        userEntityRepo.save(customer1)
+        userEntityRepo.save(customer2)
 
         val userEntityList = userEntityRepo.findAll()
 

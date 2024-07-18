@@ -1,12 +1,14 @@
-package cl.sugarfever.authorization.server.service.model
+package cl.microservices.authorization.server.service.model
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.util.UUID
 
 class User(
     private var username:String,
     private var password:String,
-    private var authorities:MutableList<GrantedAuthority>):UserDetails {
+    private var authorities:MutableList<GrantedAuthority>,
+    var user_id:UUID):UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return authorities
     }

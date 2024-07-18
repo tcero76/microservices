@@ -72,3 +72,13 @@ CREATE INDEX "payment_order_outbox_saga_status"
 CREATE UNIQUE INDEX "payment_order_outbox_saga_id_payment_status_outbox_status"
     ON "payment".order_outbox
         (type, saga_id, payment_status, outbox_status);
+
+
+CREATE TABLE "payment".customer
+(
+    customer_id uuid    NOT NULL,
+    username    varchar(255)    NOT NULL,
+    password    varchar(255)    NOT NULL,
+    authorities varchar(255)    NOT NULL,
+    CONSTRAINT customer_id_pkey PRIMARY KEY (customer_id)
+);

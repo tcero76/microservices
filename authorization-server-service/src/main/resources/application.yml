@@ -1,11 +1,20 @@
 server:
-  port: ${PORT}
+  port: ${PORT:8000}
   forward-headers-strategy: framework
 container:
-  hostname: ${HOSTNAME}
-  port: ${PORT}
+  hostname: ${HOSTNAME:auth-server}
+  port: ${PORT:8000}
 management:
   endpoints:
     web:
       exposure:
         include: health,info,metrics,prometheus
+
+postgres-config:
+  url: ${POSTGRES_CONFIG_URL:jdbc:postgresql://localhost:5432/keycloak?currentSchema=payment}
+  username: keycloak
+  password: keycloak
+  schema: payment
+  database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  show-sql: true
+  stringtype: unspecified

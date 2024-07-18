@@ -1,4 +1,4 @@
-package cl.microservices.resource.service.exception
+package cl.microservices.postgres.services.exception
 
 import java.lang.RuntimeException
 

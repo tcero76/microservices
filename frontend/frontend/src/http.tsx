@@ -1,5 +1,5 @@
-import axios, { type AxiosResponse} from 'axios' 
- 
+import axios, { type AxiosResponse} from 'axios'
+
  export function getAuthCode(state:string, codeChallenge:string) {
     var authorizationURL = `${import.meta.env.VITE_APP_REDIRECT_URL}/oauth2/authorize`;
     authorizationURL += "?client_id=client1";
@@ -12,7 +12,7 @@ import axios, { type AxiosResponse} from 'axios'
     return authorizationURL
 }
 
-export function requestTokens() {
+export async function requestTokens() {
   var urlParams = new URLSearchParams(window.location.search);
   if(urlParams.get('error')) {
     console.error(urlParams.get('error_description'))
@@ -26,43 +26,77 @@ export function requestTokens() {
         "code_verifier": localStorage.getItem("codeVerifier"),
         "redirect_uri":`${import.meta.env.VITE_APP_REDIRECT_URL}/authorized`
     };
-    axios({
+    const resp = await axios({
       url: `${import.meta.env.VITE_APP_REDIRECT_URL}/oauth2/token`,
-      method: 'post',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
       data,
     })
-    .then(postRequestAccessToken)
+    await localStorage.setItem("access_token", resp.data["access_token"])
   } else {
     alert("Invalid state value received");
-  }
-  function postRequestAccessToken(res:AxiosResponse<{access_token:string},any>) {
-    localStorage.setItem("access_token", res.data["access_token"])
   }
 }
 
 export function getInfoFromResourceServer() {
   axios({
-    method: 'get',
+    method: 'GET',
     url:`${import.meta.env.VITE_APP_REDIRECT_URL}/api/health`,
     headers: {
-        "Content-type":"application/x-www-form-urlencoded; charset=UTF-8",
+        "Content-Type":"application/json",
         "Authorization": "Bearer " + localStorage.getItem("access_token"),
     }})
   .then(postInfoFromAccessToken);
+  function postInfoFromAccessToken(res:AxiosResponse) {
+      console.log(res.data)
+  }
 }
 
-function postInfoFromAccessToken(res:AxiosResponse) {
-    alert(res.data)
+export type CreditEntryType = {
+  customerId: string,
+  total: number
+}
+export async function getUserPayment():Promise<AxiosResponse<CreditEntryType, any>> {
+  return await axios({
+    method: 'GET',
+    url:`${import.meta.env.VITE_APP_REDIRECT_URL}/api/payments`,
+    headers: {
+        "Content-Type":"application/json",
+        "Authorization": "Bearer " + localStorage.getItem("access_token"),
+    }});
 }
 
-export function postLoginForm() {
+export function postUserPayment(customerId:string) {
   axios({
-    method: 'post', 
-    url:`${import.meta.env.VITE_APP_REDIRECT_URL}/loginPost`,
-    data: {
-      username: 'sergey',
-      password: 'password'
-    }
-  })
+    method: 'GET',
+    url:`${import.meta.env.VITE_APP_REDIRECT_URL}/api/payments`,
+    headers: {
+      "Content-Type":"application/json",
+        "Authorization": "Bearer " + localStorage.getItem("access_token"),
+    }})
+  .then(res => {
+    console.log(res)
+  });
+}
+
+export async function getAuthentication():Promise<AxiosResponse<boolean, any>> {
+  return await axios({
+    method: 'GET',
+    url:`${import.meta.env.VITE_APP_REDIRECT_URL}/isAuthenticated`,
+    headers: {
+        "Content-Type":"application/json",
+        "Authorization": "Bearer " + localStorage.getItem("access_token"),
+    }})
+}
+
+export async function logout():Promise<AxiosResponse<boolean, any>> {
+  return await axios({
+    method: 'GET',
+    url:`${import.meta.env.VITE_APP_REDIRECT_URL}/logout`,
+    headers: {
+        "Content-Type":"application/json",
+        "Authorization": "Bearer " + localStorage.getItem("access_token"),
+    }})
 }

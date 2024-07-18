@@ -1,12 +1,12 @@
-package cl.sugarfever.authorization.server.service.conf
+package cl.microservices.authorization.server.service.conf
 
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import java.time.Instant
 import java.util.stream.Collectors
 
@@ -31,9 +32,11 @@ class SpringSecurityConfiguration {
     fun configureSecurityFilterChain(http:HttpSecurity):SecurityFilterChain {
         http.run { authorizeHttpRequests { it.anyRequest().permitAll() } }
             .formLogin(Customizer.withDefaults())
+            .logout { it.logoutRequestMatcher(AntPathRequestMatcher("/logout")).permitAll()}
         return http.build()
     }
 
+//    @Bean
     fun users():UserDetailsService {
         val encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
         val user = User.withUsername("sergey")
@@ -52,6 +55,7 @@ class SpringSecurityConfiguration {
                     .map { it.authority }
                     .collect(Collectors.toSet())
                 context.claims.claim("roles", authorities)
+                context.claims.claim("id_user", (principal.principal as cl.microservices.authorization.server.service.model.User).user_id)
                 context.claims.issuer("http://${hostname}:${port}")
                 context.claims.expiresAt(Instant.now().plusSeconds(86400000))
             }

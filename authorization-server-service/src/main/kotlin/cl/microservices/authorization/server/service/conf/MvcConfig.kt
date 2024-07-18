@@ -1,4 +1,4 @@
-package cl.sugarfever.authorization.server.service.conf
+package cl.microservices.authorization.server.service.conf
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry

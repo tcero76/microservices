@@ -4,8 +4,8 @@ services:
     image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION:-latest}
     container_name: keycloak
     hostname: keycloak-server
-    volumes:
-      - ./volumes/keycloak:/opt/keycloak/data/import
+#    volumes:
+#      - ./volumes/keycloak:/opt/keycloak/data/import
     ports:
       - "9091:9091"
     environment:
@@ -20,3 +20,5 @@ services:
       - "DB_PASSWORD=keycloak"
     networks:
       - ${GLOBAL_NETWORK}
+    depends_on:
+      - postgres

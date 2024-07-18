@@ -1,10 +1,8 @@
 import { ReactEventHandler } from "react"
-import { postLoginForm } from './http'
 
 export default function Login() {
     const onClickSubmit = function(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault()
-        postLoginForm()
     }
     const styleContainer = {
         'padding': '0 15%',

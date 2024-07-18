@@ -2,11 +2,10 @@ spring:
   application:
     name: resource-service
   cloud:
+    bootstrap:
+      enabled: true
     config:
       label: master
       name: config-server-resource_service
   config:
-    import: ${SPRING_CONFIG_IMPORT}
-log:
-  app-name: resource-service
-
+    import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://root:s3cr3t@config-server:8888}

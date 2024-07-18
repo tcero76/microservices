@@ -1,7 +1,18 @@
+#spring:
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:9091/auth/realms/master
+#          jwk-set-uri: http://localhost:9091/auth/realms/master/protocol/openid-connect/certs
 spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:9091/auth/realms/master
-          jwk-set-uri: http://localhost:9091/auth/realms/master/protocol/openid-connect/certs
+  application:
+    name: resource-service
+  cloud:
+    bootstrap:
+      enabled: true
+    config:
+      label: master
+      name: config-server-resource_service
+  config:
+    import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://root:s3cr3t@config-server:8888}

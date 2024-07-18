@@ -1,11 +1,10 @@
 package cl.microservices.postgres.services.services
 
+import cl.microservices.postgres.model.CreditEntry
 import cl.microservices.postgres.model.Payments
-import cl.microservices.resource.service.dto.CommandPayment
-import cl.microservices.resource.service.dto.PaymentsResponse
-import java.util.Optional
+import java.util.*
 
-interface PaymentService {
-    fun paymentPersist(commandPayment: CommandPayment):Optional<Payments>
-    fun getPayments(s: String): PaymentsResponse
+interface PostgresPaymentService {
+    fun paymentPersist(price:Int, customer_id: UUID, total:Int):Optional<Payments>
+    fun getPayments(customerId: UUID): CreditEntry
 }

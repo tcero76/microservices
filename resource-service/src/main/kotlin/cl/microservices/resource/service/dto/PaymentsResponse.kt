@@ -1,5 +1,8 @@
 package cl.microservices.resource.service.dto
 
-class PaymentsResponse {
+import java.util.UUID
 
-}
+data class PaymentsResponse(
+    val customerId:UUID,
+    val credit:Int
+)

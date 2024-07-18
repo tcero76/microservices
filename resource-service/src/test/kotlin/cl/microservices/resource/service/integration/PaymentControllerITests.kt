@@ -14,6 +14,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
@@ -27,19 +28,19 @@ class PaymentControllerITests(
     @Autowired val mockMvc: MockMvc,
     @Autowired val objectMapper:ObjectMapper) {
     private var accessToken:String = ""
-    @BeforeEach
-    fun setup() {
-        val headers = HttpHeaders()
-        headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
-        val httpEntity =
-            HttpEntity<String>("grant_type=password&username=app_user&password=Reaktor6_&scope=openid&client_id=frontend-service", headers)
-        val restTemplate = RestTemplate()
-        val response = restTemplate.exchange("http://localhost:9091/auth/realms/master/protocol/openid-connect/token",
-            HttpMethod.POST,
-            httpEntity,
-            AccessToken::class.java)
-        accessToken = "Bearer " + response.body?.access_token ?: ""
-    }
+//    @BeforeEach
+//    fun setup() {
+//        val headers = HttpHeaders()
+//        headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
+//        val httpEntity =
+//            HttpEntity<String>("grant_type=password&username=app_user&password=Reaktor6_&scope=openid&client_id=frontend-service", headers)
+//        val restTemplate = RestTemplate()
+//        val response = restTemplate.exchange("http://localhost:9091/auth/realms/master/protocol/openid-connect/token",
+//            HttpMethod.POST,
+//            httpEntity,
+//            AccessToken::class.java)
+//        accessToken = "Bearer " + response.body?.access_token ?: ""
+//    }
     @Test
     fun givenCommandPayment_whenPersistPayment_thenReturnSavedPayment() {
         val customerid1 = UUID.fromString("d215b5f8-0249-4dc5-89a3-51fd148cfb41")

@@ -1,6 +1,6 @@
 package cl.microservices.postgres.model
 
-import cl.microservices.postgres.enums.Transaction_Type
+import cl.microservices.postgres.enums.TransactionType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -15,6 +15,6 @@ data class CreditHistory constructor (
     @Id var id: UUID = UUID.randomUUID(),
     @Column(name = "customer_id") var customerid: UUID = UUID.randomUUID(),
     @Column(name = "amount") var amount:Int = 0,
-    @Column(name = "type") @Enumerated(EnumType.STRING) var typecredit:Transaction_Type? = null
+    @Column(name = "type") @Enumerated(EnumType.STRING) var typecredit:TransactionType? = null
 ) {
 }

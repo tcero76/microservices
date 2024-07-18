@@ -1,0 +1,11 @@
+external:
+  port: 8080
+
+postgres-config:
+  url: jdbc:postgresql://localhost:5432/keycloak?currentSchema=payment
+  username: keycloak
+  password: keycloak
+  schema: payment
+  database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  show-sql: true
+  stringtype: unspecified

@@ -9,7 +9,8 @@ apacheCommons="3.0"
 testContainersVersion="3.3.1"
 testContainerPostgresVersion="1.19.8"
 h2Version="1.4.193"
-springSecurity="1.3.0"
+springAuthorizationServer="1.3.0"
+springSecurity="6.2.1"
 micrometerPrometheus = "1.12.2"
 
 [libraries]
@@ -18,6 +19,7 @@ spring = { module = "org.springframework.boot:spring-boot", version.ref = "sprin
 spring-boot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springBootVersion"}
 spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBootVersion"}
 spring-boot-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBootVersion"}
+spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "springSecurity"}
 spring-boot-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springBootVersion"}
 spring-cloud-config-server = { module = "org.springframework.cloud:spring-cloud-config-server", version.ref = "springCloudVersion"}
 spring-cloud-config-client = { module = "org.springframework.cloud:spring-cloud-config-client", version.ref = "springCloudVersion"}
@@ -38,7 +40,7 @@ spring-boot-oauth2-server = { module = "org.springframework.boot:spring-boot-sta
 testcontainer-postgres = { module = "org.testcontainers:postgresql", version.ref = "testContainerPostgresVersion"}
 testcontainer-keycloak = { module = "com.github.dasniko:testcontainers-keycloak" , version.ref = "testContainersVersion"}
 h2 = { module = "com.h2database:h2", version.ref = "h2Version"}
-spring-security-authorization-server = { module = "org.springframework.security:spring-security-oauth2-authorization-server", version.ref = "springSecurity"}
+spring-security-authorization-server = { module = "org.springframework.security:spring-security-oauth2-authorization-server", version.ref = "springAuthorizationServer"}
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometerPrometheus"}
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "7.4"}
 

@@ -22,13 +22,13 @@ function useCodeChallenge(length:number):typeUseCodeChallenge {
     for (var i = 0; i < length; i++) {
         stateValue += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphaNumericCharactersLength));
     }
-    document.getElementById("stateValue")!.innerHTML = stateValue;
+    // document.getElementById("stateValue")!.innerHTML = stateValue;
     localStorage.setItem("stateValue", stateValue)
     var codeVerifier = "";
     var randomByteArray = new Uint8Array(32);
     window.crypto.getRandomValues(randomByteArray);
     codeVerifier = base64urlencode(randomByteArray);
-    document.getElementById("codeVerifierValue")!.innerHTML = codeVerifier;
+    // document.getElementById("codeVerifierValue")!.innerHTML = codeVerifier;
     localStorage.setItem("codeVerifier", codeVerifier)
 
     var codeChallengeValue = "";
@@ -37,7 +37,7 @@ function useCodeChallenge(length:number):typeUseCodeChallenge {
     window.crypto.subtle.digest("SHA-256", encodedValue)
     .then(digest => {
       codeChallengeValue = base64urlencode(Array.from(new Uint8Array(digest)));
-      document.getElementById("codeChallengeValue")!.innerHTML = codeChallengeValue;
+      // document.getElementById("codeChallengeValue")!.innerHTML = codeChallengeValue;
       setStateCRFS(stateValue)
       setCodeChallenge(codeChallengeValue)
       return {

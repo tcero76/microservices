@@ -3,10 +3,14 @@ services:
   auth-server:
     container_name: authorizationserver
     hostname: auth-server
+    ports:
+      - 8000:8000
     environment:
+      - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - PORT=8000
+      - EXTERNAL_PORT=${PORT}
     profiles:
-      - front
+      - base
     networks:
       - ${GLOBAL_NETWORK}
   resource-server:
@@ -39,14 +43,14 @@ services:
     profiles:
       - front
     environment:
+      - SERVER_PORT=${PORT}
       - SPRING_PROFILES_ACTIVE=dev
       - GATEWAY_ROUTER_FRONTEND_DEV_URI=http://front:5173
       - GATEWAY_ROUTER_AUTHORIZATION_SERVER_URI=http://auth-server:8000
       - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
       - EUREKA_URI=http://discovery-service:8761/eureka/
-      - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
     ports:
-      - "80:80"
+      - "${PORT}:${PORT}"
     networks:
       - ${GLOBAL_NETWORK}
     depends_on:
@@ -64,13 +68,12 @@ services:
       - ../frontend/frontend/:/app
     command: npm run dev
     environment:
-      - VITE_APP_REDIRECT_URL=http://localhost
+      - VITE_APP_REDIRECT_URL=http://localhost:${PORT}
     networks:
       - ${GLOBAL_NETWORK}
   discovery:
     container_name: discovery
     profiles:
-      - front
       - base
     hostname: discovery-service
     ports:
@@ -82,7 +85,6 @@ services:
     volumes:
       - "./docker-logs:/workspace/config-server/logs"
     profiles:
-      - front
       - base
     hostname: config-server
     environment:

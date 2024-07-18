@@ -8,7 +8,7 @@ import cl.microservices.postgres.model.Payments
 import cl.microservices.postgres.services.repo.CreditEntryRepo
 import cl.microservices.postgres.services.repo.CreditHistoryRepo
 import cl.microservices.postgres.services.repo.PaymentsRepo
-import cl.microservices.postgres.services.services.PaymentServiceImpl
+import cl.microservices.postgres.services.services.PostgresPaymentServiceImpl
 import cl.microservices.resource.service.dto.CommandPayment
 import cl.microservices.resource.service.dto.OrderItemDto
 import cl.microservices.postgres.services.exception.InconsistencyData
@@ -29,7 +29,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @ExtendWith(MockitoExtension::class)
-class PaymentServiceTests {
+class PostgresPaymentServiceTests {
 
     @Mock
     var creditEntryRepo: CreditEntryRepo? = null
@@ -38,7 +38,7 @@ class PaymentServiceTests {
     @Mock
     var paymentsRepo: PaymentsRepo? = null
     @InjectMocks
-    lateinit var paymentService: PaymentServiceImpl
+    lateinit var paymentService: PostgresPaymentServiceImpl
 
     var customerid1:UUID = UUID.randomUUID()
     var commandPayment: CommandPayment = CommandPayment()

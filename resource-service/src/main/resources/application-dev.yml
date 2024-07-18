@@ -1,0 +1,37 @@
+spring:
+  cloud:
+    bootstrap:
+      enabled: false
+  sql:
+    init:
+      platform: postgres
+      schema-locations: classpath:init-schema.sql
+      data-locations: classpath:init-data.sql
+      mode: always
+
+server:
+  port: 8081
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-server:8000
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+postgres-config:
+  url: jdbc:postgresql://localhost:5432/keycloak?currentSchema=payment
+  username: keycloak
+  password: keycloak
+  schema: payment
+  database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  show-sql: true
+  stringtype: unspecified
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+log:
+  app-name: resource-service

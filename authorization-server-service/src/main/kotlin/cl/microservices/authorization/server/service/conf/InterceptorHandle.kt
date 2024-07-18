@@ -1,4 +1,4 @@
-package cl.sugarfever.authorization.server.service.conf
+package cl.microservices.authorization.server.service.conf
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
