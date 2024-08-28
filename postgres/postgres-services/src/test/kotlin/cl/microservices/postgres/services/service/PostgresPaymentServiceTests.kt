@@ -1,4 +1,4 @@
-package cl.microservices.resource.service.service
+package cl.microservices.postgres.services.service
 
 import cl.microservices.postgres.enums.PaymentStatus
 import cl.microservices.postgres.enums.TransactionType
@@ -9,8 +9,6 @@ import cl.microservices.postgres.services.repo.CreditEntryRepo
 import cl.microservices.postgres.services.repo.CreditHistoryRepo
 import cl.microservices.postgres.services.repo.PaymentsRepo
 import cl.microservices.postgres.services.services.PostgresPaymentServiceImpl
-import cl.microservices.resource.service.dto.CommandPayment
-import cl.microservices.resource.service.dto.OrderItemDto
 import cl.microservices.postgres.services.exception.InconsistencyData
 import cl.microservices.postgres.services.exception.ResourceNotFoundException
 import org.assertj.core.api.Assertions
@@ -40,61 +38,57 @@ class PostgresPaymentServiceTests {
     @InjectMocks
     lateinit var paymentService: PostgresPaymentServiceImpl
 
-    var customerid1:UUID = UUID.randomUUID()
-    var commandPayment: CommandPayment = CommandPayment()
+    var customerId:UUID = UUID.randomUUID()
     var payment:Payments = Payments()
     var creditHistory1:CreditHistory = CreditHistory()
     var creditEntry:CreditEntry = CreditEntry()
+    var price:Int = 0
+    var total:Int = 0
 
     @BeforeEach
     fun init() {
-        customerid1 = UUID.randomUUID()
-        commandPayment = CommandPayment(customerid1
-            ,500,
-            arrayListOf(
-                OrderItemDto(UUID.randomUUID().toString(), 10, 20,200),
-                OrderItemDto(UUID.randomUUID().toString(), 30, 10, 300)
-            )
-        )
+        customerId = UUID.randomUUID()
+        price = 50
+        total = 50
         payment = Payments(
             id = UUID.randomUUID(),
-            customerid = commandPayment.customerId,
+            customerid = customerId,
             orderid = UUID.randomUUID(),
-            price = commandPayment.price,
+            price = price,
             createdate = Timestamp.from(Instant.now()),
             status = PaymentStatus.COMPLETED)
         creditHistory1 = CreditHistory(
             UUID.randomUUID(),
-            customerid1,
-            commandPayment.price,
+            customerId,
+            price,
             TransactionType.CREDIT
         )
         creditEntry = CreditEntry(
             UUID.randomUUID(),
-            customerid1,
-            commandPayment.price
+            customerId,
+            price
         )
     }
 
 
     @Test
     fun givenCommandPayment_whenPersist_thenSave() {
-        given(creditHistoryRepo?.findByCustomerid(customerid1))
+        given(creditHistoryRepo?.findByCustomerid(customerId))
             .willReturn(arrayListOf(creditHistory1))
-        given(creditEntryRepo?.findByCustomerid(customerid1))
+        given(creditEntryRepo?.findByCustomerid(customerId))
             .willReturn(creditEntry)
         BDDMockito.given<Payments>(paymentsRepo?.save(any<Payments>())).willReturn(payment)
-        val paymentPersist = paymentService.paymentPersist(commandPayment)
+        val paymentPersist = paymentService.paymentPersist(price, customerId, total)
         Assertions.assertThat(paymentPersist).isNotNull()
     }
 
     @Test
     fun givenCreditHistoryEmpty_whenPersist_thenExcepcion() {
 //        given
-        given(creditHistoryRepo?.findByCustomerid(customerid1)).willReturn(ArrayList<CreditHistory>())
+        given(creditHistoryRepo?.findByCustomerid(customerId)).willReturn(ArrayList<CreditHistory>())
         // when
         org.junit.jupiter.api.Assertions.assertThrows(ResourceNotFoundException::class.java, Executable {
-            paymentService?.paymentPersist(commandPayment)
+            paymentService?.paymentPersist(price, customerId, total)
         })
 //         then
         Mockito.verify<PaymentsRepo>(paymentsRepo, never())
@@ -103,11 +97,11 @@ class PostgresPaymentServiceTests {
     @Test
     fun givenCreditEntryNull_whenPersist_thenExcepcion() {
 //        given
-        given(creditHistoryRepo?.findByCustomerid(customerid1)).willReturn(arrayListOf(creditHistory1))
-        given(creditEntryRepo?.findByCustomerid(customerid1)).willReturn(null)
+        given(creditHistoryRepo?.findByCustomerid(customerId)).willReturn(arrayListOf(creditHistory1))
+        given(creditEntryRepo?.findByCustomerid(customerId)).willReturn(null)
         // when
         org.junit.jupiter.api.Assertions.assertThrows(ResourceNotFoundException::class.java, Executable {
-            paymentService?.paymentPersist(commandPayment)
+            paymentService?.paymentPersist(price, customerId, total)
         })
 //         then
         Mockito.verify<PaymentsRepo>(paymentsRepo, never())
@@ -117,14 +111,31 @@ class PostgresPaymentServiceTests {
     fun givenCreditHistoryInconsistency_whenPersist_thenExcepcion() {
 //        given
         creditEntry.totalcreditamount = creditEntry.totalcreditamount + 1
-        given(creditHistoryRepo?.findByCustomerid(customerid1)).willReturn(arrayListOf(creditHistory1))
-        given(creditEntryRepo?.findByCustomerid(customerid1)).willReturn(creditEntry)
+        given(creditHistoryRepo?.findByCustomerid(customerId)).willReturn(arrayListOf(creditHistory1))
+        given(creditEntryRepo?.findByCustomerid(customerId)).willReturn(creditEntry)
         // when
         org.junit.jupiter.api.Assertions.assertThrows(InconsistencyData::class.java, Executable {
-            paymentService?.paymentPersist(commandPayment)
+            paymentService?.paymentPersist(price, customerId, total)
         })
 //         then
         Mockito.verify<PaymentsRepo>(paymentsRepo, never())
             .save(ArgumentMatchers.any(Payments::class.java))
+    }
+
+    @Test
+    fun givenCreditHistoryExceedAmount_whenPersist_thenException() {
+        //given
+        total = 600
+        price = 600
+        given(creditHistoryRepo?.findByCustomerid(customerId)).willReturn(arrayListOf(creditHistory1))
+        given(creditEntryRepo?.findByCustomerid(customerId)).willReturn(creditEntry)
+        // when
+        org.junit.jupiter.api.Assertions.assertThrows(InconsistencyData::class.java, Executable {
+            paymentService?.paymentPersist(price, customerId, total)
+        })
+//         then
+        Mockito.verify<PaymentsRepo>(paymentsRepo, never())
+            .save(ArgumentMatchers.any(Payments::class.java))
+
     }
 }

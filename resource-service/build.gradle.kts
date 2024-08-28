@@ -22,12 +22,8 @@ tasks {
         useJUnitPlatform()
     }
 }
-//dependencyManagement {
-//    imports {
-//        mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.2")
-//    }
-//}
 dependencies {
+    implementation(libs.spring.boot.devtools)
     implementation(libs.spring.boot.actuator)
     implementation(libs.spring.cloud.config.client)
     implementation(libs.spring.cloud.discovery.client)

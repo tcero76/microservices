@@ -38,7 +38,9 @@ gateway-router:
     path:
       - /oauth2/authorize
       - /oauth2/token
+      - /loginPost
       - /login
+      - /logout
       - /isAuthenticated
     uri: http://localhost:8000
   resource-server:

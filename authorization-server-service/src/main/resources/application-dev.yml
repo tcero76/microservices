@@ -1,5 +1,5 @@
 external:
-  port: 8080
+  port: 8000
 
 postgres-config:
   url: jdbc:postgresql://localhost:5432/keycloak?currentSchema=payment

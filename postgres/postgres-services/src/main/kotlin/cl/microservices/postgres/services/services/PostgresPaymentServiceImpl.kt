@@ -25,9 +25,9 @@ class PostgresPaymentServiceImpl @Autowired constructor(
 ) : PostgresPaymentService {
 
     @Transactional
-    override fun paymentPersist(price:Int, customerId:UUID, total:Int):Optional<Payments> {
+    override fun paymentPersist(price: Int, customerId: UUID, total: Int):Optional<CreditEntry> {
         if (price != total) {
-            throw InconsistencyData("No coincide el tatal ${total}")
+            throw InconsistencyData("No coincide el total ${total}")
         }
         val creditHistoriesOpt = creditHistoryRepo.findByCustomerid(customerId)
         if(creditHistoriesOpt.isEmpty()) {
@@ -41,6 +41,9 @@ class PostgresPaymentServiceImpl @Autowired constructor(
         if (totalHistory != creditEntry.totalcreditamount) {
             throw InconsistencyData("No coincide el crédito total${creditEntry.totalcreditamount} con lo calculado del historial(${totalHistory})")
         }
+        if (creditEntry.totalcreditamount.minus(price) < 0) {
+            throw InconsistencyData("Se requiere mayor crédito para realizar la compra")
+        }
         val paymentOpt = Optional.of(paymentsRepo.save(
             Payments(
                 id = UUID.randomUUID(),
@@ -50,12 +53,11 @@ class PostgresPaymentServiceImpl @Autowired constructor(
                 createdate = Timestamp.from(Instant.now()),
                 status = PaymentStatus.COMPLETED
             )))
-        val creditEntrySave = creditEntry
-        creditEntrySave.totalcreditamount.minus(paymentOpt.get().price)
-        creditEntryRepo.save(creditEntrySave)
+        creditEntry.totalcreditamount = creditEntry.totalcreditamount.minus(paymentOpt.get().price)
+        val creditEntrySaved = creditEntryRepo.save(creditEntry)
         val creditHistorySave = CreditHistory(UUID.randomUUID(), customerId, price, TransactionType.DEBIT)
         creditHistoryRepo.save(creditHistorySave)
-        return paymentOpt;
+        return Optional.of(creditEntrySaved);
     }
 
     override fun getPayments(customerId: UUID): CreditEntry {

@@ -1,55 +1,37 @@
-import { useEffect, useState } from 'react';
-import { getInfoFromResourceServer,
-    getUserPayment,
-    getAuthentication,
-    requestTokens,
-    logout,
-    type CreditEntryType } from '../src/http.tsx'
-import { AxiosResponse } from 'axios';
+import React, { useEffect, useState } from 'react';
+import { getInfoFromResourceServer, getAuthentication } from './http'
+import {fetchAuthData, sendLogout, updatePayment } from './store/auth-actions.ts'
+import { useAuthDispatch, useAuthSelector } from './hooks/useAuthSlice.ts'
 
 export default function Home() {
-    var [state, setState] = useState({total:0, isAuthenticated:false})
-    useEffect(() => {
-        console.log("entra acá?")
-        getAuthentication()
-        .then((res:AxiosResponse<boolean,any>) => {
-            console.log(`ISAUTHENTICATED: la respuesta es: ${res.data}`)
-            if (!res.data){
-                getUserPayment()
-                .then((res:AxiosResponse<CreditEntryType, any>) => {
-                    setState({...state, total:res.data.total, isAuthenticated: true})
-                })
-            } else {
-                getUserPayment()
-                .then((res:AxiosResponse<CreditEntryType, any>) => {
-                    setState({...state, total:res.data.total, isAuthenticated: true})
-                })
-            }
-        })
-        .catch(res => {
-            requestTokens()
-            .then(getUserPayment)
-            .then((res:AxiosResponse<CreditEntryType, any>) => {
-                setState({...state, total:res.data.total, isAuthenticated: true})
-            })
-        })
-        return () => console.log("USEFFECT: ejecutó return")
-    }, [])
-    const onClickLogout = (e: React.MouseEvent) => {
-        logout()
+    const auth = useAuthSelector((state) => state.auth)
+    var [value, setValue] = useState(0)
+    const dispatch = useAuthDispatch()
+    const onChangeValue = (e:React.FormEvent<HTMLInputElement>) => {
+        let num:string = e.target.value.replace(/[^0-9]/g, ''); 
+        num = num===''? '0':num;
+        setValue(parseInt(num,10))
     }
+    useEffect(() => {
+        dispatch(fetchAuthData())
+    }, [auth.isAuthenticated])
     return (<>
                 <h1>Home</h1>
                 <div className="card">
                     <div className="card-body">
                         <div className="input-group mb-3">
                             <span className="input-group-text">$</span>
-                            <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)"></input>
+                            <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" onChange={e => onChangeValue(e)} value={value}></input>
                         </div>
-                        <p>This is some text within a card body: ${state.total}</p>
+                        <p>This is some text within a card body : {auth.creditEntry}</p>
                         <button type="button" className="btn btn-primary" onClick={getInfoFromResourceServer}>GetData</button>
-                        <button type="button" className="btn btn-secondary" onClick={onClickLogout}>logout</button>
+                        <button type="button" className="btn btn-secondary" onClick={e => dispatch(sendLogout())}>logout</button>
+                        <button type="button" className="btn btn-success" onClick={getAuthentication}>isAuthenticated</button>
+                        <button type="button" className="btn btn-danger" onClick={() => dispatch(updatePayment(value))}>Pay</button>
                     </div>
+                    <span className={`position-absolute top-0 start-100 translate-middle p-2 border border-light rounded-circle ${auth.isAuthenticated?'bg-success':'bg-danger'}`}>
+                        <span className="visually-hidden">New alerts</span>
+                    </span>
                 </div>
             </>)
 }

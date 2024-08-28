@@ -12,32 +12,54 @@ import axios, { type AxiosResponse} from 'axios'
     return authorizationURL
 }
 
-export async function requestTokens() {
-  var urlParams = new URLSearchParams(window.location.search);
-  if(urlParams.get('error')) {
-    console.error(urlParams.get('error_description'))
-  }
-  var originalStateValue = localStorage.getItem("stateValue")
-  if(urlParams.get('state') === originalStateValue) {
-    var data = {
+export type ExceptionErrorType = {
+  message:string
+  date:string
+}
+
+export type TypeToken = {
+  id_token: string,
+  access_token:string,
+  refresh_token:string,
+  token_type: "Bearer",
+  expires_in: number
+  scope: string
+}
+
+const AUTHORIZATION = "Basic " + window.btoa('client1:myClientService')
+
+export function requestTokens(code:string):Promise<AxiosResponse<TypeToken>> {
+    const data = {
         "grant_type": "authorization_code",
-        "client_id": "client1",
-        "code": urlParams.get('code'),
+        "code": code,
         "code_verifier": localStorage.getItem("codeVerifier"),
         "redirect_uri":`${import.meta.env.VITE_APP_REDIRECT_URL}/authorized`
     };
-    const resp = await axios({
+    return axios({
       url: `${import.meta.env.VITE_APP_REDIRECT_URL}/oauth2/token`,
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Authorization': AUTHORIZATION
       },
       data,
     })
-    await localStorage.setItem("access_token", resp.data["access_token"])
-  } else {
-    alert("Invalid state value received");
-  }
+}
+
+export function getTokenRefresh():Promise<AxiosResponse<TypeToken>> {
+  const data = {
+      "grant_type": "refresh_token",
+      "refresh_token": localStorage.getItem("refresh_token"),
+  };
+  return axios({
+    url: `${import.meta.env.VITE_APP_REDIRECT_URL}/oauth2/token`,
+    method: 'POST',
+    headers : {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'Authorization': AUTHORIZATION
+    },
+    data,
+  })
 }
 
 export function getInfoFromResourceServer() {
@@ -46,7 +68,7 @@ export function getInfoFromResourceServer() {
     url:`${import.meta.env.VITE_APP_REDIRECT_URL}/api/health`,
     headers: {
         "Content-Type":"application/json",
-        "Authorization": "Bearer " + localStorage.getItem("access_token"),
+        "Authorization": "Bearer " + localStorage.getItem("access_token")
     }})
   .then(postInfoFromAccessToken);
   function postInfoFromAccessToken(res:AxiosResponse) {
@@ -58,8 +80,8 @@ export type CreditEntryType = {
   customerId: string,
   total: number
 }
-export async function getUserPayment():Promise<AxiosResponse<CreditEntryType, any>> {
-  return await axios({
+export function getUserPayment():Promise<AxiosResponse<CreditEntryType, any>> {
+  return axios({
     method: 'GET',
     url:`${import.meta.env.VITE_APP_REDIRECT_URL}/api/payments`,
     headers: {
@@ -91,7 +113,11 @@ export async function getAuthentication():Promise<AxiosResponse<boolean, any>> {
     }})
 }
 
-export async function logout():Promise<AxiosResponse<boolean, any>> {
+export async function getLogout():Promise<AxiosResponse<boolean, any>> {
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('refresh_token')
+  localStorage.removeItem('stateValue')
+  localStorage.removeItem('codeVerifier')
   return await axios({
     method: 'GET',
     url:`${import.meta.env.VITE_APP_REDIRECT_URL}/logout`,
@@ -99,4 +125,24 @@ export async function logout():Promise<AxiosResponse<boolean, any>> {
         "Content-Type":"application/json",
         "Authorization": "Bearer " + localStorage.getItem("access_token"),
     }})
+}
+
+export type SavePaymentResponse = {
+  credit: number
+}
+
+export function savePayment(price:number):Promise<AxiosResponse<SavePaymentResponse>> {
+  const data = {
+    price,
+    items: [{ quantity:20, price:10, subTotal:price }]
+  }
+  return axios({
+    method: 'POST',
+    url: `${import.meta.env.VITE_APP_REDIRECT_URL}/api/payments`,
+    headers: {
+        "Content-Type":"application/json",
+        "Authorization": "Bearer " + localStorage.getItem("access_token"),
+    },
+    data
+  })
 }

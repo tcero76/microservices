@@ -1,33 +1,48 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { type TypeToken, type CreditEntryType, type SavePaymentResponse } from '../http'
 
-
-type CartState = {
-  isAuthenticated: boolean;
+type AuthState = {
+  isAuthenticated: boolean
+  creditEntry: number
 };
 
-const initialState: CartState = {
+const initialState: AuthState = {
   isAuthenticated: false,
+  creditEntry: 0
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    authentication(
-      state,
-      action: PayloadAction<{ id: string; title: string; price: number }>
-    ) {
-    //   const itemIndex = state.items.findIndex(
-    //     (item) => item.id === action.payload.id
-    //   );
-
-    //   if (itemIndex >= 0) {
-    //     state.items[itemIndex].quantity++;
-    //   } else {
-    //     state.items.push({ ...action.payload, quantity: 1 });
-    //   }
+    setAuthenticated(state, action:PayloadAction<boolean>) {
+      state.isAuthenticated = action.payload
     },
-  },
-});
+    setPayment(state, action:PayloadAction<SavePaymentResponse>) {
+      state.creditEntry = action.payload.credit
+    },
+    saveAuthentication(state, action:PayloadAction<TypeToken>) {
+      if ( action.payload.access_token != null) {
+        localStorage.setItem('access_token', action.payload.access_token)
+        localStorage.setItem('refresh_token', action.payload.refresh_token)
+      }
+    },
+    updateCreditEntry(state, action:PayloadAction<CreditEntryType>) {
+      state.creditEntry = action.payload.total
+    },
+    refresh(state, action:PayloadAction<TypeToken>) {
+      if (action.payload.access_token != null) {
+        localStorage.setItem('access_token', action.payload.access_token)
+        localStorage.setItem('refresh_token', action.payload.refresh_token)
+        state.isAuthenticated = true
+      }
+    },
+    logout(state) {
+      state.isAuthenticated = false
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      window.location.replace('/')
+    }
+}});
 
-export const { authentication } = authSlice.actions;
+export const { saveAuthentication, refresh, logout, setAuthenticated, updateCreditEntry, setPayment } = authSlice.actions;

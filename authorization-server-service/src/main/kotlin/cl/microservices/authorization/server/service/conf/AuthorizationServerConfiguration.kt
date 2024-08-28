@@ -43,7 +43,7 @@ class AuthorizationServerConfiguration {
         val registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId("client1")
             .clientSecret("{noop}myClientService")
-            .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
             .redirectUri("http://localhost:${externalPort}/login/oauth2/code/users-client-oidc")
@@ -83,7 +83,7 @@ class AuthorizationServerConfiguration {
     }
 
     @Bean
-    fun jwkSource():JWKSource<SecurityContext>{
+    fun jwkSource():JWKSource<SecurityContext> {
         val rsaKey:RSAKey = generateRsa()
         val jwkSet = JWKSet(rsaKey)
         return JWKSource { jwkSelector, securityContext -> jwkSelector.select(jwkSet) }

@@ -7,3 +7,4 @@ infraestructure/docker-logs/**
 infraestructure/prometheus/**
 **/build/**
 **/logs/**
+wishlist.txt

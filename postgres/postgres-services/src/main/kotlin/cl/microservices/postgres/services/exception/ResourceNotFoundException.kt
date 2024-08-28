@@ -2,5 +2,5 @@ package cl.microservices.postgres.services.exception
 
 import java.lang.RuntimeException
 
-class ResourceNotFoundException(message: String) : RuntimeException(message) {
+class ResourceNotFoundException(override val message: String) : RuntimeException(message) {
 }

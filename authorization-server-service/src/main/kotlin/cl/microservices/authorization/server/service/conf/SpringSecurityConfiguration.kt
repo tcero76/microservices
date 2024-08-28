@@ -6,15 +6,10 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer
-import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import java.time.Instant
@@ -32,18 +27,11 @@ class SpringSecurityConfiguration {
     fun configureSecurityFilterChain(http:HttpSecurity):SecurityFilterChain {
         http.run { authorizeHttpRequests { it.anyRequest().permitAll() } }
             .formLogin(Customizer.withDefaults())
-            .logout { it.logoutRequestMatcher(AntPathRequestMatcher("/logout")).permitAll()}
+            .logout {
+                it.logoutRequestMatcher(AntPathRequestMatcher("/logout"))
+                    .permitAll()
+            }
         return http.build()
-    }
-
-//    @Bean
-    fun users():UserDetailsService {
-        val encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-        val user = User.withUsername("sergey")
-            .password(encoder.encode("password"))
-            .roles("USER")
-            .build()
-        return InMemoryUserDetailsManager(user)
     }
 
     @Bean
@@ -57,7 +45,7 @@ class SpringSecurityConfiguration {
                 context.claims.claim("roles", authorities)
                 context.claims.claim("id_user", (principal.principal as cl.microservices.authorization.server.service.model.User).user_id)
                 context.claims.issuer("http://${hostname}:${port}")
-                context.claims.expiresAt(Instant.now().plusSeconds(86400000))
+                context.claims.expiresAt(Instant.now().plusSeconds(600))
             }
         }
     }

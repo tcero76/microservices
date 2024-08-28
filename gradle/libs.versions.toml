@@ -43,6 +43,7 @@ h2 = { module = "com.h2database:h2", version.ref = "h2Version"}
 spring-security-authorization-server = { module = "org.springframework.security:spring-security-oauth2-authorization-server", version.ref = "springAuthorizationServer"}
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometerPrometheus"}
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "7.4"}
+spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "springBootVersion"}
 
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }

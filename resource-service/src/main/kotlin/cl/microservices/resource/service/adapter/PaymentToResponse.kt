@@ -4,10 +4,11 @@ import cl.microservices.postgres.model.CreditEntry
 import cl.microservices.postgres.model.Payments
 import cl.microservices.resource.service.dto.CreditEntryResponse
 import cl.microservices.resource.service.dto.PaymentsResponse
+import java.util.UUID
 
 class PaymentToResponse {
-    fun savePaymentPostgresToPaymentResponse(payment: Payments): PaymentsResponse {
-        return PaymentsResponse(payment.customerid, payment.price)
+    fun savePaymentPostgresToPaymentResponse(customerId:UUID, payment: CreditEntry): PaymentsResponse {
+        return PaymentsResponse(customerId, payment.totalcreditamount)
     }
 
     fun getPaymentPostgresToCreditEntryResponse(payments: CreditEntry): CreditEntryResponse {

@@ -25,35 +25,28 @@ class AuthorizationController(val paymentService: PaymentService) {
 
     @GetMapping("/api/health")
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getHealth(@AuthenticationPrincipal jwt:Jwt):MutableMap<String,Any> {
+    fun getHealth(@AuthenticationPrincipal jwt: Jwt):MutableMap<String,Any> {
         log.info { "JWT: El id de Usuario es: ${jwt.claims.get("user_id")}" }
         return Collections.singletonMap("principal", jwt)
     }
-
-    @GetMapping("/api/isAuthenticated")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun isAuthenticated():ResponseEntity<Boolean> {
-        log.info { "SECURITY_CONTEXT: El contexto de seguridad es: ${SecurityContextHolder.getContext()}" }
-        return ResponseEntity.ok(SecurityContextHolder.getContext().authentication.isAuthenticated)
-    }
-
-
     @PostMapping("/api/payments")
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun postPayments(@RequestBody commandPayment: CommandPayment):ResponseEntity<Payments> {
-//        val paymentResponse = postgresPaymentService.paymentPersist(commandPayment)
-//        log.info { "PAYMENTSERVICE: Respuesta : ${paymentResponse}" }
-//        if (paymentResponse.isEmpty) {
-            return ResponseEntity.created(URI("/api/payments")).body(null)
-//        }
-//        return ResponseEntity.created(URI("/api/payments")).body(paymentResponse.get())
+    fun postPayments(@RequestBody commandPayment: CommandPayment, @AuthenticationPrincipal jwt: Jwt):ResponseEntity<PaymentsResponse> {
+        val idUser = jwt.claims.get("id_user").toString();
+        log.info { "USERID: The user_id es: ${idUser}" }
+        val paymentResponse = paymentService.paymentPersist(commandPayment, idUser)
+        return ResponseEntity
+            .created(URI("/api/payments"))
+            .body(paymentResponse.get())
     }
-
     @GetMapping("/api/payments")
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getPayments(@AuthenticationPrincipal jwt:Jwt):ResponseEntity<CreditEntryResponse> {
+        log.info { "Jwt: Principal : ${jwt}" }
         val creditEntryResponse: CreditEntryResponse = paymentService.getPayments(jwt.claims.get("id_user").toString())
         log.info { "PAYMENTSERVICE: Respuesta : ${creditEntryResponse}" }
-        return ResponseEntity.accepted().body(creditEntryResponse)
+        return ResponseEntity
+            .accepted()
+            .body(creditEntryResponse)
     }
 }

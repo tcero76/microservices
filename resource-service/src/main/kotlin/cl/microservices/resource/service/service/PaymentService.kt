@@ -10,12 +10,10 @@ import java.util.*
 
 @Service
 class PaymentService(val postgresPaymentService:PostgresPaymentService) {
-    fun paymentPersist(commandPayment: CommandPayment):PaymentsResponse {
-        val paymentPersist =
-            postgresPaymentService.paymentPersist(commandPayment.price, commandPayment.customerId, commandPayment.items.sumOf { it.subTotal })
-        return PaymentToResponse().savePaymentPostgresToPaymentResponse(paymentPersist.get())
+    fun paymentPersist(commandPayment: CommandPayment, customerId:String):Optional<PaymentsResponse> {
+        val paymentPersist = postgresPaymentService.paymentPersist(commandPayment.price, UUID.fromString(customerId),  commandPayment.items.sumOf { it.subTotal })
+        return Optional.of(PaymentToResponse().savePaymentPostgresToPaymentResponse(UUID.fromString(customerId), paymentPersist.get()))
     }
-
     fun getPayments(userId: String): CreditEntryResponse {
         return PaymentToResponse()
             .getPaymentPostgresToCreditEntryResponse(postgresPaymentService.getPayments(UUID.fromString(userId)))

@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class AuthController {
-
     val log = KotlinLogging.logger {  }
-
     @GetMapping("/isAuthenticated")
     fun isAuthenticated():ResponseEntity<Boolean> {
         val authentication = SecurityContextHolder.getContext().authentication
-        log.info { "El principal es: ${SecurityContextHolder.getContext().authentication.principal}"}
-        return ResponseEntity.ok(authentication.isAuthenticated)
+
+        if(authentication.principal::class.simpleName == "User") {
+            return ResponseEntity.ok(authentication.isAuthenticated)
+        }
+        return ResponseEntity.ok(false)
     }
 }

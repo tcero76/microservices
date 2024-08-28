@@ -2,6 +2,8 @@ import java.util.function.Consumer
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 plugins {
+    alias(libs.plugins.sk)
+    alias(libs.plugins.jvm)
     alias(libs.plugins.spring.boot)
     id("io.spring.dependency-management") version "1.1.4"
 }

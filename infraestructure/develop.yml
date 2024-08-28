@@ -3,14 +3,14 @@ services:
   auth-server:
     container_name: authorizationserver
     hostname: auth-server
+    profiles:
+      - base
     ports:
       - 8000:8000
     environment:
       - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - PORT=8000
       - EXTERNAL_PORT=${PORT}
-    profiles:
-      - base
     networks:
       - ${GLOBAL_NETWORK}
   resource-server:
@@ -41,7 +41,7 @@ services:
     volumes:
       - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
     profiles:
-      - front
+      - base
     environment:
       - SERVER_PORT=${PORT}
       - SPRING_PROFILES_ACTIVE=dev
@@ -54,7 +54,6 @@ services:
     networks:
       - ${GLOBAL_NETWORK}
     depends_on:
-      - front
       - postgres
   front:
     container_name: front

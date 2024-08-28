@@ -14,7 +14,7 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
 server:
-  port: 8080
+  port: 80
 eureka:
   client:
     serviceUrl:
@@ -43,6 +43,7 @@ gateway-router:
       - /loginPost
       - /login
       - /logout
+      - /isAuthenticated
     uri: http://localhost:8000
   resource-server:
     path:

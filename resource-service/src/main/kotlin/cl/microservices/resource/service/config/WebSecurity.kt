@@ -43,17 +43,11 @@ class WebSecurity(val oAuth2ResourceServerProperties: OAuth2ResourceServerProper
                     it.decoder(jwtDecoder())
                 }
             }
-
         }
         return http.build()
     }
-    fun jwtDecoder(): JwtDecoder {
-        var issuer:String = ""
-        if (oAuth2ResourceServerProperties.getJwt().getIssuerUri() == null) {
-            issuer = environment.getProperty("server.security.oauth2.resourceserver.jwt.issuer-uri") ?: ""
-        } else {
-            issuer = oAuth2ResourceServerProperties.getJwt().getIssuerUri()
-        }
+    private fun jwtDecoder(): JwtDecoder {
+        var issuer:String = oAuth2ResourceServerProperties.getJwt().getIssuerUri()
         log.info { "ISSUER: la url es: ${issuer}" }
         val jwtDecoder = JwtDecoders.fromOidcIssuerLocation(issuer) as NimbusJwtDecoder
         val withIssuer = JwtValidators.createDefaultWithIssuer(issuer)

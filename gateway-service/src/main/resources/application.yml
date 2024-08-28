@@ -9,12 +9,3 @@ spring:
     import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://root:s3cr3t@config-server:8888}
 log:
   app-name: gateway-service
-
-gateway-router:
-  authorization-server:
-    path:
-      - /oauth2/authorize
-      - /oauth2/token
-      - /loginPost
-      - /login
-      - /logout

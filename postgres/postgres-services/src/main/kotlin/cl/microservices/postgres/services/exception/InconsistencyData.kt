@@ -2,5 +2,5 @@ package cl.microservices.postgres.services.exception
 
 import java.lang.RuntimeException
 
-class InconsistencyData(message:String):RuntimeException(message) {
+class InconsistencyData(override val message:String):RuntimeException(message) {
 }

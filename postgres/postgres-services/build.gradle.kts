@@ -29,4 +29,5 @@ dependencies {
     testImplementation(libs.spring.test)
     testRuntimeOnly(libs.h2)
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.21")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
 }

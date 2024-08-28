@@ -1,10 +1,9 @@
+server:
+  port: 8081
 spring:
   cloud:
     bootstrap:
       enabled: false
-
-server:
-  port: 8081
   security:
     oauth2:
       resourceserver:
