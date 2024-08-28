@@ -25,7 +25,6 @@ tasks {
 
 dependencies {
     implementation(libs.spring.security.authorization.server)
-    implementation(libs.spring.boot.oauth2.client)
     implementation(libs.spring.boot.actuator)
     implementation(libs.kotlin.logging)
     implementation(libs.spring.boot.web)
