@@ -1,4 +1,4 @@
-package cl.microservices.resource.service.util
+package util
 
 data class AccessToken(
     var access_token: String,

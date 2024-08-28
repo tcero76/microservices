@@ -1,4 +1,4 @@
-package cl.microservices.resource.service.util
+package util
 
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
