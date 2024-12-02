@@ -1,4 +1,4 @@
-package cl.microservices.resource.service.config
+package org.example.cl.microservices.security.config
 
 import org.springframework.core.convert.converter.Converter
 import org.springframework.security.core.GrantedAuthority

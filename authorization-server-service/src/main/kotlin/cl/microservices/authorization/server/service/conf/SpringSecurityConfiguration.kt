@@ -25,7 +25,8 @@ class SpringSecurityConfiguration {
     var hostname:String? = ""
     @Bean
     fun configureSecurityFilterChain(http:HttpSecurity):SecurityFilterChain {
-        http.run { authorizeHttpRequests { it.anyRequest().permitAll() } }
+        http.run {
+            authorizeHttpRequests { it.anyRequest().permitAll() } }
             .formLogin(Customizer.withDefaults())
             .logout {
                 it.logoutRequestMatcher(AntPathRequestMatcher("/logout"))
@@ -33,7 +34,6 @@ class SpringSecurityConfiguration {
             }
         return http.build()
     }
-
     @Bean
     fun jwtCustomizer():OAuth2TokenCustomizer<JwtEncodingContext> {
         return OAuth2TokenCustomizer { context ->

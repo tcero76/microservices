@@ -1,14 +1,10 @@
-package cl.microservices.resource.service.config
+package org.example.cl.microservices.security.config
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.apache.catalina.core.ApplicationContext
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
-import org.springframework.core.env.get
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -18,6 +14,7 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator
 import org.springframework.security.oauth2.jwt.*
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.web.SecurityFilterChain
+import java.time.Duration
 
 @Configuration
 @EnableWebSecurity
@@ -33,8 +30,8 @@ class WebSecurity(val oAuth2ResourceServerProperties: OAuth2ResourceServerProper
         http.run {
             authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.GET,"/actuator/**").permitAll()
-                it.requestMatchers(HttpMethod.GET, "/api/**").authenticated()
-                it.requestMatchers(HttpMethod.POST, "/api/**").authenticated()
+                it.requestMatchers(HttpMethod.GET, "/api/**").hasRole("USER")
+                it.requestMatchers(HttpMethod.POST, "/api/**").hasRole("USER")
                 cors { it.disable() }
             }
             oauth2ResourceServer {

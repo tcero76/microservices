@@ -23,12 +23,12 @@ tasks {
     }
 }
 dependencies {
+    implementation("org.springframework.security:spring-security-oauth2-jose:6.2.1")
     implementation(libs.spring.boot.devtools)
     implementation(libs.spring.boot.actuator)
     implementation(libs.spring.cloud.config.client)
     implementation(libs.spring.cloud.discovery.client)
     implementation(libs.spring.boot.web)
-    implementation(libs.spring.boot.oauth2.server)
     implementation(libs.spring.boot.validation)
     implementation(libs.spring.boot.actuator)
     implementation(libs.kotlin.logging)
@@ -36,7 +36,7 @@ dependencies {
     implementation(project(":postgres:postgres-config"))
     implementation(project(":postgres:postgres-model"))
     implementation(project(":postgres:postgres-services"))
-    testImplementation(libs.spring.security.test)
+    implementation(project(":security"))
     testImplementation(libs.testcontainer.postgres)
     testImplementation(libs.testcontainer.keycloak)
     testImplementation(libs.spring.test)

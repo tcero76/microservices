@@ -1,4 +1,9 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-server:8000
   cloud:
     bootstrap:
       enabled: false
@@ -11,11 +16,7 @@ spring:
 
 server:
   port: 8081
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://auth-server:8000
+
 eureka:
   client:
     serviceUrl:
