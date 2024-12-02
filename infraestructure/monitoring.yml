@@ -6,6 +6,8 @@ services:
       - monitoring
     hostname: grafana
     container_name: grafana
+    tty: true
+    stdin_open: true
     ports:
       - 3000:3000
     volumes:
@@ -21,6 +23,8 @@ services:
       - monitoring
     hostname: prometheus
     container_name: prometheus
+    tty: true
+    stdin_open: true
     ports:
       - 9090:9090
     volumes:
@@ -33,6 +37,8 @@ services:
     profiles:
       - monitoring
     container_name: node_exporter
+    tty: true
+    stdin_open: true
     ports:
       - "9100:9100"
     networks:

@@ -6,6 +6,8 @@ services:
       - elastic
     hostname: elastic-1
     container_name: elastic-1
+    tty: true
+    stdin_open: true
     environment:
       - node.name=elastic-1
       - cluster.name=es-twitter-cluster
@@ -28,6 +30,8 @@ services:
     profiles:
       - elastic
     container_name: elastic-2
+    tty: true
+    stdin_open: true
     environment:
       - node.name=elastic-2
       - cluster.name=es-twitter-cluster
@@ -48,6 +52,8 @@ services:
     profiles:
       - elastic
     container_name: elastic-3
+    tty: true
+    stdin_open: true
     environment:
       - node.name=elastic-3
       - cluster.name=es-twitter-cluster
@@ -68,6 +74,8 @@ services:
     profiles:
       - elastic
     container_name: kibana
+    tty: true
+    stdin_open: true
     ports:
       - 5601:5601
     depends_on:
@@ -84,6 +92,8 @@ services:
       - elastic
     command: logstash -f /etc/logstash/conf.d/logback.conf
     container_name: logstash
+    tty: true
+    stdin_open: true
     ports:
       - "9600:9600"
     depends_on:
