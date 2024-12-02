@@ -35,7 +35,6 @@ class AuthorizationController(val paymentService: PaymentService) {
     }
     @GetMapping("/api/payments")
     fun getPayments(@AuthenticationPrincipal jwt:Jwt):ResponseEntity<CreditEntryResponse> {
-        NimbusJwtDecoder.withPublicKey()
         log.info { "Jwt: Principal : ${jwt}" }
         val creditEntryResponse: CreditEntryResponse = paymentService.getPayments(jwt.claims.get("id_user").toString())
         log.info { "PAYMENTSERVICE: Respuesta : ${creditEntryResponse}" }
