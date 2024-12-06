@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.sk)
     alias(libs.plugins.jvm)
     alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency)
 }
 
 java {

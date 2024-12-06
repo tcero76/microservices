@@ -11,10 +11,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-}
-
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
@@ -25,7 +21,7 @@ tasks {
 }
 
 dependencies {
-    implementation(libs.spring.boot.oauth2.server)
+    api(libs.spring.boot.oauth2.server)
     implementation(libs.kotlin.logging)
     testImplementation(libs.spring.security.test)
     testImplementation(libs.spring.test)

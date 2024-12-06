@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.jvm)
     alias(libs.plugins.sk)
     alias(libs.plugins.spring.boot)
-    id("io.spring.dependency-management") version "1.1.4"
+    alias(libs.plugins.spring.dependency)
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -28,12 +28,15 @@ dependencyManagement {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.2")
     }
 }
+val springProfiles:String? = System.getenv("SPRING_PROFILES_ACTIVE")
 dependencies {
+    if(!springProfiles.equals("dev")) {
+        implementation(libs.spring.cloud.discovery.client)
+        implementation(libs.spring.cloud.config.client)
+    }
     implementation(libs.gateway)
-    implementation(libs.spring.cloud.discovery.client)
     implementation(libs.kotlin.logging)
     implementation(libs.spring.boot.actuator)
-    implementation(libs.spring.cloud.config.client)
     implementation("io.micrometer:micrometer-registry-prometheus:1.12.2")
     implementation(project(":app-config-data"))
     testImplementation("org.jetbrains.kotlin:kotlin-test")

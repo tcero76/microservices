@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.sk)
     alias(libs.plugins.jvm)
     alias(libs.plugins.spring.boot)
-    id("io.spring.dependency-management") version "1.1.4"
+    alias(libs.plugins.spring.dependency)
 }
 
 java {
@@ -22,12 +22,11 @@ tasks {
         useJUnitPlatform()
     }
 }
+val springProfiles:String? = System.getenv("SPRING_PROFILES_ACTIVE")
 dependencies {
-    implementation("org.springframework.security:spring-security-oauth2-jose:6.2.1")
+    api(project(":security"))
     implementation(libs.spring.boot.devtools)
     implementation(libs.spring.boot.actuator)
-    implementation(libs.spring.cloud.config.client)
-    implementation(libs.spring.cloud.discovery.client)
     implementation(libs.spring.boot.web)
     implementation(libs.spring.boot.validation)
     implementation(libs.spring.boot.actuator)
@@ -36,7 +35,10 @@ dependencies {
     implementation(project(":postgres:postgres-config"))
     implementation(project(":postgres:postgres-model"))
     implementation(project(":postgres:postgres-services"))
-    implementation(project(":security"))
+    if(!springProfiles.equals("dev")) {
+        implementation(libs.spring.cloud.config.client)
+        implementation(libs.spring.cloud.discovery.client)
+    }
     testImplementation(libs.testcontainer.postgres)
     testImplementation(libs.testcontainer.keycloak)
     testImplementation(libs.spring.test)
