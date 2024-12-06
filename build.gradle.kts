@@ -45,13 +45,5 @@ tasks {
             group = "custom"
             dependsOn(":${it}:bootBuildImage")
         }
-        register("run_${it}") {
-            group = "custom"
-            dependsOn(":${it}:bootRun")
-        }
-    }
-    register("_runAll") {
-        group = "custom"
-        dependsOn(":resource-service:bootRun").dependsOn(":authorization-server-service:bootRun")
     }
 }
