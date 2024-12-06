@@ -7,7 +7,6 @@ services:
     stdin_open: true
     profiles:
       - prod
-      - base
     ports:
       - 8000:8000
     environment:
@@ -49,7 +48,6 @@ services:
       - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
     profiles:
       - prod
-      - base
     environment:
       - SERVER_PORT=${EXTERNAL_PORT}
       - SPRING_PROFILES_ACTIVE=dev
