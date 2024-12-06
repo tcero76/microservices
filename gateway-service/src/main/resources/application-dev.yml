@@ -14,7 +14,7 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
 server:
-  port: 80
+  port: ${EXTERNAL_PORT}
 eureka:
   client:
     serviceUrl:
