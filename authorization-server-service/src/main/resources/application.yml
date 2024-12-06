@@ -3,7 +3,6 @@ server:
   forward-headers-strategy: framework
 container:
   hostname: ${HOSTNAME:auth-server}
-  port: ${PORT:8000}
 management:
   endpoints:
     web:
