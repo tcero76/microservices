@@ -23,7 +23,6 @@ class Router @Autowired constructor(private val environment:Environment,
         val property = environment.getProperty("spring.profiles.active").toString().split(",")
         val routes = builder.routes()
         log.info { "PROFILE: El perfil dev es: ${property.contains("dev")}" }
-        log.info { "AUTHSERVER: la uri resultantes es :${gatewayConfigData.authorizationServer.uri}" }
         routes
             .route("Authorization-server", Function { it
                 .path(*gatewayConfigData.authorizationServer.path.toTypedArray())
@@ -34,7 +33,7 @@ class Router @Autowired constructor(private val environment:Environment,
                 .path(*gatewayConfigData.resourceServer.path.toTypedArray())
                 .uri(gatewayConfigData.resourceServer.uri)})
             .build();
-        if ( property.contains("dev")) {
+        if (property.contains("dev")) {
             routes.route( "frontend-dev", Function { it
                 .path(*gatewayConfigData.frontendDev.path.toTypedArray())
                 .uri(gatewayConfigData.frontendDev.uri)
