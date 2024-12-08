@@ -23,6 +23,4 @@ tasks {
 dependencies {
     api(libs.spring.boot.oauth2.server)
     implementation(libs.kotlin.logging)
-    testImplementation(libs.spring.security.test)
-    testImplementation(libs.spring.test)
 }

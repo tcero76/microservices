@@ -13,6 +13,8 @@ services:
       - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - PORT=8000
       - EXTERNAL_PORT=${EXTERNAL_PORT}
+      - PUBLICKEY=${PUBLICKEY}
+      - PRIVATEKEY=${PRIVATEKEY}
     networks:
       - ${GLOBAL_NETWORK}
   resource-server:
@@ -33,6 +35,7 @@ services:
       - EUREKA_URI=http://discovery-service:8761/eureka/
       - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
       - ENCRYPT_KEY=${ENCRYPT_KEY}
+      - PUBLICKEY=${PUBLICKEY}
     depends_on:
       - config-server
       - postgres
