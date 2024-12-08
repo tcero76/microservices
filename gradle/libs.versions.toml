@@ -1,6 +1,6 @@
 [versions]
 kotlinVersion="1.9.21"
-springBootVersion="3.2.0"
+springBootVersion="3.3.6"
 springCloudVersion="4.1.1"
 flyway="9.22.3"
 postgres="42.2.16"
@@ -9,17 +9,17 @@ apacheCommons="3.0"
 testContainersVersion="3.3.1"
 testContainerPostgresVersion="1.19.8"
 h2Version="1.4.193"
-springAuthorizationServer="1.3.0"
-springSecurity="6.2.1"
+springAuthorizationServer="1.3.3"
+springSecurity="6.3.5"
 micrometerPrometheus = "1.12.2"
+logstashEncoder = "7.4"
+springDependency = "1.1.4"
 
 [libraries]
 spring-boot = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBootVersion"}
 spring = { module = "org.springframework.boot:spring-boot", version.ref = "springBootVersion"}
 spring-boot-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springBootVersion"}
 spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBootVersion"}
-spring-boot-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBootVersion"}
-spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "springSecurity"}
 spring-boot-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springBootVersion"}
 spring-cloud-config-server = { module = "org.springframework.cloud:spring-cloud-config-server", version.ref = "springCloudVersion"}
 spring-cloud-config-client = { module = "org.springframework.cloud:spring-cloud-config-client", version.ref = "springCloudVersion"}
@@ -35,20 +35,22 @@ spring-test = { module = "org.springframework.boot:spring-boot-starter-test", ve
 apache-commons = { module = "org.apache.commons:commons-lang3", version.ref = "apacheCommons"}
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinLogging"}
 spring-boot-actuator = {module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBootVersion"}
+spring-boot-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "springBootVersion"}
+spring-security-test = { module = "org.springframework.security:spring-security-test", version.ref = "springSecurity"}
+spring-security-authorization-server = { module = "org.springframework.security:spring-security-oauth2-authorization-server", version.ref = "springAuthorizationServer"}
 spring-boot-oauth2-client = { module = "org.springframework.boot:spring-boot-starter-oauth2-client", version.ref = "springBootVersion"}
 spring-boot-oauth2-server = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server", version.ref = "springBootVersion"}
 testcontainer-postgres = { module = "org.testcontainers:postgresql", version.ref = "testContainerPostgresVersion"}
 testcontainer-keycloak = { module = "com.github.dasniko:testcontainers-keycloak" , version.ref = "testContainersVersion"}
 h2 = { module = "com.h2database:h2", version.ref = "h2Version"}
-spring-security-authorization-server = { module = "org.springframework.security:spring-security-oauth2-authorization-server", version.ref = "springAuthorizationServer"}
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometerPrometheus"}
-logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version = "7.4"}
+logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstashEncoder"}
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "springBootVersion"}
 
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
 sk = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlinVersion"}
-spring-boot = { id = "org.springframework.boot", version = "3.2.2"}
-spring-dependency = { id="io.spring.dependency-management", version = "1.1.4"}
+spring-boot = { id = "org.springframework.boot", version.ref = "springBootVersion"}
+spring-dependency = { id="io.spring.dependency-management", version.ref = "springDependency"}
 flyway = { id = "org.flywaydb.flyway", version.ref = "flyway"}
 
