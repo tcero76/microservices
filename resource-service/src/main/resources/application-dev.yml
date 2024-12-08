@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   cloud:
     bootstrap:
@@ -8,9 +10,6 @@ spring:
       schema-locations: classpath:init-schema.sql
       data-locations: classpath:init-data.sql
       mode: always
-
-server:
-  port: 8081
 postgres-config:
   url: jdbc:postgresql://localhost:5432/keycloak?currentSchema=payment
   username: keycloak

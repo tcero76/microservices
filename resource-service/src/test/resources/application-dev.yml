@@ -4,21 +4,12 @@ spring:
   cloud:
     bootstrap:
       enabled: false
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://auth-server:8000
   sql:
     init:
       platform: postgres
       schema-locations: classpath:init-schema.sql
       data-locations: classpath:init-data.sql
       mode: always
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 postgres-config:
   url: jdbc:postgresql://localhost:5432/keycloak?currentSchema=payment&stringtype=unspecified
   username: keycloak
@@ -34,3 +25,9 @@ management:
         include: health,info,metrics,prometheus
 log:
   app-name: resource-service
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+public-key-location: ${PUBLICKEY}

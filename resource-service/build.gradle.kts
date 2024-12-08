@@ -42,5 +42,6 @@ dependencies {
     testImplementation(libs.testcontainer.postgres)
     testImplementation(libs.testcontainer.keycloak)
     testImplementation(libs.spring.test)
+    testImplementation(libs.spring.security.test)
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
 }
