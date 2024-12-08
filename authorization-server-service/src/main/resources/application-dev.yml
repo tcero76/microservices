@@ -8,3 +8,5 @@ postgres-config:
   database-platform: org.hibernate.dialect.PostgreSQL9Dialect
   show-sql: true
   stringtype: unspecified
+public-key-location: ${PUBLICKEY}
+private-key-location: ${PRIVATEKEY}

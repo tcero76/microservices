@@ -9,3 +9,8 @@ spring:
       name: config-server-resource_service
   config:
     import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://root:s3cr3t@config-server:8888}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}

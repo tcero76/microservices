@@ -1,6 +1,7 @@
-package org.example.cl.microservices.security.config
+package cl.microservices.security.config
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -16,7 +17,14 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator
 import org.springframework.security.oauth2.jwt.*
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.web.SecurityFilterChain
+import java.security.KeyFactory
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
+import java.util.*
 import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +32,8 @@ import java.util.stream.Collectors
 class WebSecurity(val oAuth2ResourceServerProperties: OAuth2ResourceServerProperties,
 ) {
     val log = KotlinLogging.logger {  }
+    @Value("\${public-key-location}")
+    var publicKeyLocation:String = ""
     @Bean
     open fun configure(http:HttpSecurity):SecurityFilterChain  {
         http.run {
@@ -55,12 +65,16 @@ class WebSecurity(val oAuth2ResourceServerProperties: OAuth2ResourceServerProper
     }
 
     private fun jwtDecoder(): JwtDecoder {
-        var issuer:String = oAuth2ResourceServerProperties.getJwt().getIssuerUri()
-        log.info { "ISSUER: la url es: ${issuer}" }
-        val jwtDecoder = JwtDecoders.fromOidcIssuerLocation(issuer) as NimbusJwtDecoder
-        val withIssuer = JwtValidators.createDefaultWithIssuer(issuer)
-        val withAudience: OAuth2TokenValidator<Jwt> = DelegatingOAuth2TokenValidator(withIssuer)
-        jwtDecoder.setJwtValidator(withAudience)
-        return jwtDecoder
+        return NimbusJwtDecoder.withPublicKey(loadPublicKey()).build()
+    }
+    private fun loadPublicKey(): RSAPublicKey {
+        val publicKeyPEM = publicKeyLocation
+            .replace("-----BEGIN PUBLIC KEY-----", "")
+            .replace("-----END PUBLIC KEY-----", "")
+            .replace("\n", "")
+        val decoded = Base64.getDecoder().decode(publicKeyPEM)
+        val spec = X509EncodedKeySpec(decoded)
+        val keyFactory = KeyFactory.getInstance("RSA")
+        return keyFactory.generatePublic(spec) as RSAPublicKey
     }
 }
