@@ -5,8 +5,6 @@ services:
     hostname: auth-server
     tty: true
     stdin_open: true
-    profiles:
-      - prod
     ports:
       - 8000:8000
     environment:
@@ -21,8 +19,6 @@ services:
     container_name: resourceserver
     tty: true
     stdin_open: true
-    profiles:
-      - prod
     user: root
     entrypoint: ["check-config-server-started.sh"]
     volumes:
@@ -31,6 +27,7 @@ services:
     ports:
       - 8081:8081
     environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - EUREKA_URI=http://discovery-service:8761/eureka/
       - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
@@ -49,11 +46,9 @@ services:
     entrypoint: ["check-config-server-started.sh"]
     volumes:
       - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
-    profiles:
-      - prod
     environment:
       - SERVER_PORT=${EXTERNAL_PORT}
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - GATEWAY_ROUTER_FRONTEND_DEV_URI=http://front:5173
       - GATEWAY_ROUTER_AUTHORIZATION_SERVER_URI=http://auth-server:8000
       - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
@@ -68,8 +63,6 @@ services:
     container_name: front
     tty: true
     stdin_open: true
-    profiles:
-      - front
     hostname: front
     working_dir: /app
     ports:
@@ -85,8 +78,6 @@ services:
     container_name: discovery
     tty: true
     stdin_open: true
-    profiles:
-      - prod
     hostname: discovery-service
     ports:
       - 8761:8761
@@ -98,8 +89,6 @@ services:
     stdin_open: true
     volumes:
       - "./docker-logs:/workspace/config-server/logs"
-    profiles:
-      - prod
     hostname: config-server
     environment:
       - ENCRYPT_KEY=${ENCRYPT_KEY}
