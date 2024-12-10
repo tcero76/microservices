@@ -23,7 +23,7 @@ gateway-router:
       - /
       - /assets/**
       - /authorized**
-    uri: http://localhost:8082
+    uri: http://front:8082
   authorization-server:
     path:
       - /oauth2/authorize
@@ -32,12 +32,12 @@ gateway-router:
       - /login
       - /logout
       - /isAuthenticated
-    uri: http://localhost:8000
+    uri: http://auth-server:8000
   resource-server:
     path:
       - /api/health
       - /api/payments
-    uri: http://localhost:8081
+    uri: lb://RESOURCE-SERVICE
 management:
   endpoints:
     web:
