@@ -2,25 +2,11 @@ version: '3'
 services:
   auth-server:
     image: tcero76/authorization-server-service:${VERSION}
-    profiles:
-      - prod
   resource-server:
     image: tcero76/resource-service:${VERSION}
-    profiles:
-      - prod
   gateway:
     image: tcero76/gateway-service:${VERSION}
-    profiles:
-      - prod
-  front:
-    image: node:22.3.0
-    profiles:
-      - front
   discovery:
     image: tcero76/discovery-service:${VERSION}
-    profiles:
-      - prod
   config-server:
     image: tcero76/config-server:${VERSION}
-    profiles:
-      - prod
