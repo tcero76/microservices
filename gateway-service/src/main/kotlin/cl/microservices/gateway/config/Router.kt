@@ -33,16 +33,10 @@ class Router @Autowired constructor(private val environment:Environment,
                 .path(*gatewayConfigData.resourceServer.path.toTypedArray())
                 .uri(gatewayConfigData.resourceServer.uri)})
             .build();
-        if (property.contains("dev")) {
-            routes.route( "frontend-dev", Function { it
-                .path(*gatewayConfigData.frontendDev.path.toTypedArray())
-                .uri(gatewayConfigData.frontendDev.uri)
+            routes.route( "frontend", Function { it
+                .path(*gatewayConfigData.frontend.path.toTypedArray())
+                .uri(gatewayConfigData.frontend.uri)
             })
-        } else {
-            routes.route("frontend-prod", Function {  it
-                .path(*gatewayConfigData.frontendProd.path.toTypedArray())
-                .uri(gatewayConfigData.frontendProd.uri)})
-        }
         return routes.build();
     }
 }

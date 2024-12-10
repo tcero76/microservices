@@ -20,7 +20,7 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 gateway-router:
-  frontend-dev:
+  frontend:
     path:
       - /
       - /assets/**
@@ -31,12 +31,6 @@ gateway-router:
       - /node_modules/**
       - /authorized**
     uri: http://localhost:5173
-  frontend-prod:
-    path:
-      - /
-      - /assets/**
-      - /authorized**
-    uri: http://localhost:8082
   authorization-server:
     path:
       - /oauth2/authorize
