@@ -4,17 +4,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties("gateway-router")
 class GatewayConfigData() {
-    var frontendDev: FrontendDev = FrontendDev()
-    var frontendProd: FrontendProd = FrontendProd()
+    var frontend: Frontend = Frontend()
     var authorizationServer: AuthorizationServer = AuthorizationServer()
     var resourceServer: ResourceServer = ResourceServer()
-    class FrontendDev() {
+    class Frontend() {
         lateinit var path: ArrayList<String>
         lateinit var uri: String
-    }
-    class FrontendProd() {
-        lateinit var path: ArrayList<String>
-        lateinit var uri:String
     }
     class AuthorizationServer() {
         lateinit var path: ArrayList<String>
