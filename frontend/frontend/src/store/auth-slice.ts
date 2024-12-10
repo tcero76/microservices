@@ -21,7 +21,7 @@ export const authSlice = createSlice({
     setPayment(state, action:PayloadAction<SavePaymentResponse>) {
       state.creditEntry = action.payload.credit
     },
-    saveAuthentication(state, action:PayloadAction<TypeToken>) {
+    saveAuthentication(_, action:PayloadAction<TypeToken>) {
       if ( action.payload.access_token != null) {
         localStorage.setItem('access_token', action.payload.access_token)
         localStorage.setItem('refresh_token', action.payload.refresh_token)

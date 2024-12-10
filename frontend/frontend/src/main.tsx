@@ -8,7 +8,7 @@ import Login from './Login'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import './scss/style.scss'
-import * as bootstrap from 'bootstrap'
+import 'bootstrap'
 
 const router = createBrowserRouter([
   {

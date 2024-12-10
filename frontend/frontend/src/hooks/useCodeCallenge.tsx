@@ -23,14 +23,13 @@ function useCodeChallenge(length:number):typeUseCodeChallenge {
         stateValue += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphaNumericCharactersLength));
     }
     localStorage.setItem("stateValue", stateValue)
-    var codeVerifier = "";
     var randomByteArray = new Uint8Array(32);
     window.crypto.getRandomValues(randomByteArray);
-    codeVerifier = base64urlencode(randomByteArray);
+    var codeVerifier = base64urlencode(randomByteArray as unknown as number[]);
     localStorage.setItem("codeVerifier", codeVerifier)
 
     var codeChallengeValue = "";
-    var textEncoder = new TextEncoder('US-ASCII');
+    var textEncoder = new TextEncoder();
     var encodedValue = textEncoder.encode(codeVerifier);
     window.crypto.subtle.digest("SHA-256", encodedValue)
     .then(digest => {

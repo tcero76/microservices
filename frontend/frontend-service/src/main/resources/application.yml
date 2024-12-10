@@ -4,4 +4,4 @@ server:
 spring:
   web:
     resources:
-      static-locations: classpath:/dist
+      static-locations: classpath:/dist/

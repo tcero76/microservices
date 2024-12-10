@@ -1,4 +1,4 @@
-import { ReactEventHandler } from "react"
+import { } from "react"
 
 export default function Login() {
     const onClickSubmit = function(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) {

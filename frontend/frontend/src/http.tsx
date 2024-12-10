@@ -90,7 +90,7 @@ export function getUserPayment():Promise<AxiosResponse<CreditEntryType, any>> {
     }});
 }
 
-export function postUserPayment(customerId:string) {
+export function postUserPayment() {
   axios({
     method: 'GET',
     url:`${import.meta.env.VITE_APP_REDIRECT_URL}/api/payments`,

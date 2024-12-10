@@ -7,7 +7,7 @@ export default function Home() {
     const auth = useAuthSelector((state) => state.auth)
     var [value, setValue] = useState(0)
     const dispatch = useAuthDispatch()
-    const onChangeValue = (e:React.FormEvent<HTMLInputElement>) => {
+    const onChangeValue = (e:React.ChangeEvent<HTMLInputElement>) => {
         let num:string = e.target.value.replace(/[^0-9]/g, ''); 
         num = num===''? '0':num;
         setValue(parseInt(num,10))
@@ -25,7 +25,7 @@ export default function Home() {
                         </div>
                         <p>This is some text within a card body : {auth.creditEntry}</p>
                         <button type="button" className="btn btn-primary" onClick={getInfoFromResourceServer}>GetData</button>
-                        <button type="button" className="btn btn-secondary" onClick={e => dispatch(sendLogout())}>logout</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => dispatch(sendLogout())}>logout</button>
                         <button type="button" className="btn btn-success" onClick={getAuthentication}>isAuthenticated</button>
                         <button type="button" className="btn btn-danger" onClick={() => dispatch(updatePayment(value))}>Pay</button>
                     </div>
