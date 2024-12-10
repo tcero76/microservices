@@ -58,11 +58,14 @@ class WebSecurity(val oAuth2ResourceServerProperties: OAuth2ResourceServerProper
         return jwtAuthenticationConverter
     }
     fun authServerRoleConverter(): Converter<Jwt, Collection<GrantedAuthority>> = Converter {
-        val realmAccess = it.claims.get("roles") as Collection<String>
-        (it.claims.get("roles") as ArrayList<String>).stream()
-            .map(::SimpleGrantedAuthority)
-            .collect(Collectors.toList())
+        val list = it.claims.get("roles").safeCast<ArrayList<String>>()
+        list?.stream()?.map(::SimpleGrantedAuthority)
+            ?.collect(Collectors.toList())
     }
+    private inline fun <reified T> Any?.safeCast(): T? {
+        return this as? T
+    }
+
 
     private fun jwtDecoder(): JwtDecoder {
         return NimbusJwtDecoder.withPublicKey(loadPublicKey()).build()
