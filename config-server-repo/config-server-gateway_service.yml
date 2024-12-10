@@ -18,18 +18,7 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 gateway-router:
-  frontend-dev:
-    path:
-      - /
-      - /assets/**
-      - /callback
-      - /src/**
-      - /@vite/**
-      - /@react-refresh/**
-      - /node_modules/**
-      - /authorized**
-    uri: http://localhost:5173
-  frontend-prod:
+  frontend:
     path:
       - /
       - /assets/**
