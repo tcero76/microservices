@@ -1,3 +1,5 @@
+![Topologia del proyecto](./img/demo.gif)
+
 # Resumen
 
 Proyecto inicial de sistema web hecho con microservicios. Sólo tiene una landing page y un logging, pero hecho en forma distribuida. Está hecho en Kotlin y React-typescript
