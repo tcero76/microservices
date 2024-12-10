@@ -25,9 +25,9 @@ management:
         include: health,info,metrics,prometheus
 log:
   app-name: resource-service
+public-key-location: ${PUBLICKEY}
 logging:
   level:
     org:
       springframework:
         security: TRACE
-public-key-location: ${PUBLICKEY}
