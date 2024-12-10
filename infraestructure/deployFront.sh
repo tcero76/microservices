@@ -1,0 +1,1 @@
+docker run -it --rm -v $PWD/../frontend:/app -w /app/frontend/ node:22.3.0 npm run build
