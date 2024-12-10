@@ -33,6 +33,7 @@ gateway-router:
     path:
       - /
       - /assets/**
+      - /authorized**
     uri: http://localhost:8082
   authorization-server:
     path:
