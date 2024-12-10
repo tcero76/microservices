@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { getInfoFromResourceServer, getAuthentication } from './http'
 import {fetchAuthData, sendLogout, updatePayment } from './store/auth-actions.ts'
 import { useAuthDispatch, useAuthSelector } from './hooks/useAuthSlice.ts'
 
@@ -23,11 +22,9 @@ export default function Home() {
                             <span className="input-group-text">$</span>
                             <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" onChange={e => onChangeValue(e)} value={value}></input>
                         </div>
-                        <p>This is some text within a card body : {auth.creditEntry}</p>
-                        <button type="button" className="btn btn-primary" onClick={getInfoFromResourceServer}>GetData</button>
-                        <button type="button" className="btn btn-secondary" onClick={() => dispatch(sendLogout())}>logout</button>
-                        <button type="button" className="btn btn-success" onClick={getAuthentication}>isAuthenticated</button>
-                        <button type="button" className="btn btn-danger" onClick={() => dispatch(updatePayment(value))}>Pay</button>
+                        <p>Saldo : {auth.creditEntry}</p>
+                        <button type="button" className="btn btn-primary" onClick={() => dispatch(updatePayment(value))}>Pay</button>
+                        <button type="button" className="btn btn-danger" onClick={() => dispatch(sendLogout())}>logout</button>
                     </div>
                     <span className={`position-absolute top-0 start-100 translate-middle p-2 border border-light rounded-circle ${auth.isAuthenticated?'bg-success':'bg-danger'}`}>
                         <span className="visually-hidden">New alerts</span>
