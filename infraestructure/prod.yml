@@ -49,9 +49,6 @@ services:
     environment:
       - SERVER_PORT=${EXTERNAL_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - GATEWAY_ROUTER_FRONTEND_PROD_URI=http://front:8082
-      - GATEWAY_ROUTER_AUTHORIZATION_SERVER_URI=http://auth-server:8000
-      - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
       - EUREKA_URI=http://discovery-service:8761/eureka/
     ports:
       - "${EXTERNAL_PORT}:${EXTERNAL_PORT}"
