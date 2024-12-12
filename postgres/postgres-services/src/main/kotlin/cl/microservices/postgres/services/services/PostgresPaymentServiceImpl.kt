@@ -4,7 +4,6 @@ import cl.microservices.postgres.enums.PaymentStatus
 import cl.microservices.postgres.enums.TransactionType
 import cl.microservices.postgres.model.CreditEntry
 import cl.microservices.postgres.model.CreditHistory
-import cl.microservices.postgres.model.Customer
 import cl.microservices.postgres.model.Payments
 import cl.microservices.postgres.services.exception.InconsistencyData
 import cl.microservices.postgres.services.exception.ResourceNotFoundException
@@ -12,7 +11,6 @@ import cl.microservices.postgres.services.repo.CreditEntryRepo
 import cl.microservices.postgres.services.repo.CreditHistoryRepo
 import cl.microservices.postgres.services.repo.PaymentsRepo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Timestamp
