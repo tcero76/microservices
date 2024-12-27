@@ -43,6 +43,11 @@ PRIVATEKEY="-----BEGIN PRIVATE KEY-----MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiA
 ## Perfil Prod
 Perfil de producción que despliega los servicios completos.
 
+Debido a la configuración de seguridad que requiere el Authorization Server se debe agregar la siguiente registro en el archivo `/etc/hosts`:
+```
+127.0.1.1   auth-server
+```
+
 ### Instrucciones
 Este perfil se configura con las siguientes variables de entorno creando el archivo siguiente ```infraestructura/.env```:
 ```
