@@ -1,8 +1,6 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { saveAuthentication, refresh, logout, setAuthenticated, updateCreditEntry, setPayment } from './auth-slice'
+import { saveAuthentication, logout, setAuthenticated, updateCreditEntry, setPayment } from './auth-slice'
 import { requestTokens,
-  getTokenRefresh,
-  type TypeToken,
   getLogout,
   getAuthentication, 
   getUserPayment,
@@ -22,11 +20,10 @@ export const fetchAuthData = () => {
         const code = urlParams.get('code')
         let { data: isAuthenticated } = await getAuthentication()
         dispatch(setAuthenticated(isAuthenticated))
-        if(urlParams.get('state') === originalStateValue && isAuthenticated
-          && code != null) {
+        if(urlParams.get('state') === originalStateValue && isAuthenticated && code != null) {
           let respToken = await requestTokens(code)
           dispatch(saveAuthentication(respToken.data))
-        } else {
+        } else if(!isAuthenticated) {
           console.log('Invalid state value received');
           window.location.href = '/'
         }
@@ -36,8 +33,6 @@ export const fetchAuthData = () => {
         })
     };
   };
-
-
 
   export const updatePayment = (total:number) => {
     return async (dispatch:Dispatch<UnknownAction>) => {
@@ -51,18 +46,6 @@ export const fetchAuthData = () => {
     
     }
   }
-
-  export const fetchRefreshData = () => {
-    return async (dispatch:Dispatch<UnknownAction>) => {
-      getTokenRefresh()
-      .then((res:AxiosResponse<TypeToken>) => {
-        dispatch(refresh(res.data))
-      })
-      .catch((res:AxiosError<any>) => {
-        console.log(res)
-      })
-    };
-  };
 
   export const sendLogout = () => {
     return async (dispatch:Dispatch<UnknownAction>) => {
