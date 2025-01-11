@@ -14,15 +14,12 @@ import java.util.function.Function
 
 @Configuration
 @EnableConfigurationProperties(GatewayConfigData::class)
-class Router @Autowired constructor(private val environment:Environment,
-    private var gatewayConfigData: GatewayConfigData
+class Router @Autowired constructor(private var gatewayConfigData: GatewayConfigData
 ) {
     val log = KotlinLogging.logger { }
     @Bean
     fun routes(builder:RouteLocatorBuilder):RouteLocator {
-        val property = environment.getProperty("spring.profiles.active").toString().split(",")
         val routes = builder.routes()
-        log.info { "PROFILE: El perfil dev es: ${property.contains("dev")}" }
         routes
             .route("Authorization-server", Function { it
                 .path(*gatewayConfigData.authorizationServer.path.toTypedArray())
