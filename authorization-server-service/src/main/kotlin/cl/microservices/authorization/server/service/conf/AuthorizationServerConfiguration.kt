@@ -33,7 +33,6 @@ import java.util.stream.Collectors
 
 @Configuration
 @EnableWebSecurity
-
 class AuthorizationServerConfiguration {
     val log = KotlinLogging.logger { }
     @Value("\${server.port}")
@@ -50,11 +49,8 @@ class AuthorizationServerConfiguration {
     fun registeringClientRepository():RegisteredClientRepository {
         val registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId("client1")
-            .clientSecret("{noop}myClientService")
-            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri("http://localhost:${externalPort}/login/oauth2/code/users-client-oidc")
             .redirectUri("http://localhost:${externalPort}/authorized")
             .scope(OidcScopes.OPENID)
             .scope("read")
@@ -64,6 +60,7 @@ class AuthorizationServerConfiguration {
             .build()
         return InMemoryRegisteredClientRepository(registeredClient);
     }
+
     @Bean
     fun jwtCustomizer(): OAuth2TokenCustomizer<JwtEncodingContext> {
         return OAuth2TokenCustomizer { context ->

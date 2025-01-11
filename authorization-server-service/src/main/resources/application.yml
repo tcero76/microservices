@@ -20,3 +20,8 @@ postgres-config:
   stringtype: unspecified
 public-key-location: ${PUBLICKEY}
 private-key-location: ${PRIVATEKEY}
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
