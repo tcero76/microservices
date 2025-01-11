@@ -30,7 +30,7 @@ dependencyManagement {
 }
 val springProfiles:String? = System.getenv("SPRING_PROFILES_ACTIVE")
 dependencies {
-    if(!springProfiles.equals("dev")) {
+    if(springProfiles.equals("prod")) {
         implementation(libs.spring.cloud.discovery.client)
         implementation(libs.spring.cloud.config.client)
     }

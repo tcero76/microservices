@@ -32,10 +32,11 @@ dependencies {
     implementation(libs.spring.boot.actuator)
     implementation(libs.kotlin.logging)
     implementation(libs.logstash.logback.encoder)
+    implementation(libs.arrow)
     implementation(project(":postgres:postgres-config"))
     implementation(project(":postgres:postgres-model"))
     implementation(project(":postgres:postgres-services"))
-    if(!springProfiles.equals("dev")) {
+    if(springProfiles.equals("prod")) {
         implementation(libs.spring.cloud.config.client)
         implementation(libs.spring.cloud.discovery.client)
     }
