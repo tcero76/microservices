@@ -14,6 +14,8 @@ springSecurity="6.3.5"
 micrometerPrometheus = "1.12.2"
 logstashEncoder = "7.4"
 springDependency = "1.1.4"
+arrow-kt="1.2.4"
+
 
 [libraries]
 spring-boot = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBootVersion"}
@@ -46,6 +48,7 @@ h2 = { module = "com.h2database:h2", version.ref = "h2Version"}
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometerPrometheus"}
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstashEncoder"}
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "springBootVersion"}
+arrow = { module = "io.arrow-kt:arrow-core", version.ref = "arrow-kt"}
 
 [plugins]
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
