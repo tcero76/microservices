@@ -7,6 +7,7 @@ class GatewayConfigData() {
     var frontend: Frontend = Frontend()
     var authorizationServer: AuthorizationServer = AuthorizationServer()
     var resourceServer: ResourceServer = ResourceServer()
+    var bffwebService: BFFWebService = BFFWebService()
     class Frontend() {
         lateinit var path: ArrayList<String>
         lateinit var uri: String
@@ -16,6 +17,10 @@ class GatewayConfigData() {
         lateinit var uri: String
     }
     class ResourceServer() {
+        lateinit var path: ArrayList<String>
+        lateinit var uri: String
+    }
+    class BFFWebService() {
         lateinit var path: ArrayList<String>
         lateinit var uri: String
     }

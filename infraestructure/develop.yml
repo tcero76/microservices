@@ -3,7 +3,7 @@ services:
   auth-server:
     container_name: authorizationserver
     profiles:
-      - prod
+      - dev
     hostname: auth-server
     tty: true
     stdin_open: true
@@ -17,16 +17,41 @@ services:
       - PRIVATEKEY=${PRIVATEKEY}
     networks:
       - ${GLOBAL_NETWORK}
-  resource-server:
-    container_name: resourceserver
+  bffweb-service:
+    container_name: bffweb-service
     profiles:
-      - prod
+      - dev
     tty: true
     stdin_open: true
     user: root
-    entrypoint: ["check-config-server-started.sh"]
+    entrypoint: ["check-auth-server-started.sh"]
     volumes:
-      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
+      - "./check-auth-server-started.sh:/usr/local/bin/check-auth-server-started.sh"
+      - "./docker-logs:/workspace/bffweb-service/logs"
+    ports:
+      - 8086:8086
+    environment:
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_AUTH_SERVER_REDIRECT_URI=http://localhost:8080/login/oauth2/code/auth-server
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_ISSUER_URI=http://auth-server:8000
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_TOKEN_URI=http://auth-server:8000/oauth2/token
+      - BFFWEB_CONFIG_WEB_CLIENT_BASE_URL=http://resource-server:8081/api
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - EUREKA_URI=http://discovery-service:8761/eureka/
+      - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
+      - PUBLICKEY=${PUBLICKEY}
+    depends_on:
+      - postgres
+    networks:
+      - ${GLOBAL_NETWORK}
+  resource-server:
+    container_name: resourceserver
+    profiles:
+      - dev
+    tty: true
+    stdin_open: true
+    user: root
+    volumes:
       - "./docker-logs:/workspace/resource-service/logs"
     ports:
       - 8081:8081
@@ -38,7 +63,6 @@ services:
       - ENCRYPT_KEY=${ENCRYPT_KEY}
       - PUBLICKEY=${PUBLICKEY}
     depends_on:
-      - config-server
       - postgres
     networks:
       - ${GLOBAL_NETWORK}
@@ -63,19 +87,17 @@ services:
   gateway:
     container_name: gateway
     profiles:
-      - prod
+      - dev
     tty: true
     stdin_open: true
     user: root
-    entrypoint: ["check-config-server-started.sh"]
-    volumes:
-      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
     environment:
       - SERVER_PORT=${EXTERNAL_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - GATEWAY_ROUTER_FRONTEND_PROD_URI=http://front:8082
+      - GATEWAY_ROUTER_FRONTEND_URI=http://front:5173
       - GATEWAY_ROUTER_AUTHORIZATION_SERVER_URI=http://auth-server:8000
       - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
+      - GATEWAY_ROUTER_BFFWEB_SERVICE_URI=http://bffweb-service:8086
       - EUREKA_URI=http://discovery-service:8761/eureka/
     ports:
       - "${EXTERNAL_PORT}:${EXTERNAL_PORT}"

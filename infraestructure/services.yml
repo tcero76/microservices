@@ -2,6 +2,8 @@ version: '3'
 services:
   auth-server:
     image: tcero76/authorization-server-service:${VERSION}
+  bffweb-service:
+    image: tcero76/bffweb-service:${VERSION}
   resource-server:
     image: tcero76/resource-service:${VERSION}
   gateway:

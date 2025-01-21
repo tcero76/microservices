@@ -1,0 +1,25 @@
+FROM node:22.3.0 AS frontBuilder
+ARG EXTERNAL_PORT
+ENV EXTERNAL_PORT=$(EXTERNAL_PORT)
+WORKDIR /app
+COPY frontend/frontend/ /app/
+ENV VITE_APP_REDIRECT_URL=http://localhost:$(EXTERNAL_PORT)
+#${EXTERNAL_PORT}
+RUN npm run build
+
+FROM openjdk:17-jdk-alpine AS builder
+WORKDIR /builder
+COPY . .
+RUN rm -rf /builder/frontend/frontend-service/src/main/resources/dist/*
+COPY --from=frontBuilder /app/dist/ /builder/frontend/frontend-service/src/main/resources/dist/
+RUN ./gradlew :frontend:frontend-service:clean :frontend:frontend-service:bootJar
+RUN cp ./frontend/frontend-service/build/libs/frontend-service.jar application.jar
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
+
+FROM bellsoft/liberica-openjre-alpine:17
+WORKDIR /application
+COPY --from=builder /builder/extracted/dependencies/ ./
+COPY --from=builder /builder/extracted/spring-boot-loader/ ./
+COPY --from=builder /builder/extracted/snapshot-dependencies/ ./
+COPY --from=builder /builder/extracted/application/ ./
+ENTRYPOINT ["java", "-jar", "application.jar"]
