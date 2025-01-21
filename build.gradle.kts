@@ -24,7 +24,8 @@ val services: List<String> = listOf(
     "authorization-server-service",
     "gateway-service",
     "discovery-service",
-    "config-server"
+    "config-server",
+    "bffweb-service"
 )
 
 var versionProject = ""
