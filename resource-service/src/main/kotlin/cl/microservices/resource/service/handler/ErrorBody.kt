@@ -1,4 +1,4 @@
-package cl.microservices.resource.service.exception.handler
+package cl.microservices.resource.service.common.exceptions.handler
 
 import java.sql.Timestamp
 
