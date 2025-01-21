@@ -1,6 +1,4 @@
-package cl.microservices.resource.service.dto
-
-import cl.microservices.postgres.model.Customer
+package cl.microservices.resource.service.common.dto
 
 data class CreditEntryResponse(
     val customerId:String,

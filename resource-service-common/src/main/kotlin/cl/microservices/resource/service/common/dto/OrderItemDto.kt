@@ -1,4 +1,4 @@
-package cl.microservices.resource.service.dto
+package cl.microservices.resource.service.common.dto
 
 import jakarta.validation.constraints.NotNull
 import java.util.*
