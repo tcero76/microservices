@@ -48,6 +48,7 @@ h2 = { module = "com.h2database:h2", version.ref = "h2Version"}
 micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometerPrometheus"}
 logstash-logback-encoder = { module = "net.logstash.logback:logstash-logback-encoder", version.ref = "logstashEncoder"}
 spring-boot-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "springBootVersion"}
+spring-boot-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "springBootVersion"}
 arrow = { module = "io.arrow-kt:arrow-core", version.ref = "arrow-kt"}
 
 [plugins]
