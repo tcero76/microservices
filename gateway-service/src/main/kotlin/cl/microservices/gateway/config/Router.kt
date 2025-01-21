@@ -14,7 +14,8 @@ import java.util.function.Function
 
 @Configuration
 @EnableConfigurationProperties(GatewayConfigData::class)
-class Router @Autowired constructor(private var gatewayConfigData: GatewayConfigData
+class Router @Autowired constructor(private var gatewayConfigData: GatewayConfigData,
+    val environment: Environment
 ) {
     val log = KotlinLogging.logger { }
     @Bean
@@ -29,11 +30,13 @@ class Router @Autowired constructor(private var gatewayConfigData: GatewayConfig
             .route("resource-server", Function { it
                 .path(*gatewayConfigData.resourceServer.path.toTypedArray())
                 .uri(gatewayConfigData.resourceServer.uri)})
-            .build();
-            routes.route( "frontend", Function { it
+            .route( "frontend", Function { it
                 .path(*gatewayConfigData.frontend.path.toTypedArray())
                 .uri(gatewayConfigData.frontend.uri)
             })
+            .route("bffweb-service", Function { it
+                .path(*gatewayConfigData.bffwebService.path.toTypedArray())
+                .uri(gatewayConfigData.bffwebService.uri)})
         return routes.build();
     }
 }
