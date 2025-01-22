@@ -24,11 +24,10 @@ tasks {
 }
 val springProfiles:String? = System.getenv("SPRING_PROFILES_ACTIVE")
 dependencies {
-    api(project(":security"))
+    implementation(libs.spring.boot.oauth2.server)
     implementation(libs.spring.boot.devtools)
     implementation(libs.spring.boot.actuator)
     implementation(libs.spring.boot.web)
-    implementation(libs.spring.boot.validation)
     implementation(libs.spring.boot.actuator)
     implementation(libs.kotlin.logging)
     implementation(libs.logstash.logback.encoder)
@@ -36,6 +35,7 @@ dependencies {
     implementation(project(":postgres:postgres-config"))
     implementation(project(":postgres:postgres-model"))
     implementation(project(":postgres:postgres-services"))
+    implementation(project(":resource-service-common"))
     if(springProfiles.equals("prod")) {
         implementation(libs.spring.cloud.config.client)
         implementation(libs.spring.cloud.discovery.client)
