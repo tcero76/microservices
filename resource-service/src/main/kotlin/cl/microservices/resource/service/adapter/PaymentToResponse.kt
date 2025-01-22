@@ -9,7 +9,6 @@ class PaymentToResponse {
     fun savePaymentPostgresToPaymentResponse(customerId:UUID, payment: CreditEntry): PaymentsResponse {
         return PaymentsResponse(customerId, payment.totalcreditamount)
     }
-
     fun getPaymentPostgresToCreditEntryResponse(payments: CreditEntry): CreditEntryResponse {
         return CreditEntryResponse(payments.customerid.toString(), payments.totalcreditamount)
     }
