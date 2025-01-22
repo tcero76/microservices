@@ -39,6 +39,8 @@ class AuthorizationServerConfiguration {
     var port:String = ""
     @Value("\${container.hostname}")
     var hostname:String = ""
+    @Value("\${external.host}")
+    var externalHost:String = ""
     @Value("\${external.port}")
     var externalPort:String = ""
     @Value("\${public-key-location}")
@@ -47,18 +49,17 @@ class AuthorizationServerConfiguration {
     var privateKeyLocation:String = ""
     @Bean
     fun registeringClientRepository():RegisteredClientRepository {
-        val registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-            .clientId("client1")
-            .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+        val registeredClientBffWeb = RegisteredClient.withId(UUID.randomUUID().toString())
+            .clientId("bffweb-service")
+            .clientSecret("{noop}bffweb-service-secret")
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-            .redirectUri("http://localhost:${externalPort}/authorized")
+            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+            .redirectUri("http://${externalHost}:${externalPort}/login/oauth2/code/auth-server")
             .scope(OidcScopes.OPENID)
             .scope("read")
-            .clientSettings(ClientSettings.builder()
-                .requireAuthorizationConsent(false)
-                .requireProofKey(true).build())
             .build()
-        return InMemoryRegisteredClientRepository(registeredClient);
+        return InMemoryRegisteredClientRepository(registeredClientBffWeb);
     }
 
     @Bean

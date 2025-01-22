@@ -12,7 +12,6 @@ class AuthController {
     @GetMapping("/isAuthenticated")
     fun isAuthenticated():ResponseEntity<Boolean> {
         val authentication = SecurityContextHolder.getContext().authentication
-
         if(authentication.principal::class.simpleName == "User") {
             return ResponseEntity.ok(authentication.isAuthenticated)
         }

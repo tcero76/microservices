@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.spring.boot.actuator)
     implementation(libs.kotlin.logging)
     implementation(libs.spring.boot.web)
+    implementation(libs.spring.boot.devtools)
     implementation(project(":postgres:postgres-config"))
     implementation(project(":postgres:postgres-model"))
     implementation(project(":postgres:postgres-services"))
