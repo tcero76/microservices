@@ -13,6 +13,7 @@ services:
       - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - PORT=8000
       - EXTERNAL_PORT=${EXTERNAL_PORT}
+      - EXTERNAL_HOST=${EXTERNAL_HOST}
       - PUBLICKEY=${PUBLICKEY}
       - PRIVATEKEY=${PRIVATEKEY}
     networks:
