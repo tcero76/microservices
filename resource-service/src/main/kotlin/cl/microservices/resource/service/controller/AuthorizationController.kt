@@ -1,8 +1,8 @@
 package cl.microservices.resource.service.controller
 
-import cl.microservices.resource.service.dto.CommandPayment
-import cl.microservices.resource.service.dto.CreditEntryResponse
-import cl.microservices.resource.service.dto.PaymentsResponse
+import cl.microservices.resource.service.common.dto.CommandPayment
+import cl.microservices.resource.service.common.dto.CreditEntryResponse
+import cl.microservices.resource.service.common.dto.PaymentsResponse
 import cl.microservices.resource.service.service.PaymentService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.ResponseEntity

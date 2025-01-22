@@ -1,4 +1,4 @@
-package cl.microservices.resource.service.common.exceptions.handler
+package cl.microservices.resource.service.handler
 
 import cl.microservices.postgres.services.exception.InconsistencyData
 import cl.microservices.postgres.services.exception.ResourceNotFoundException

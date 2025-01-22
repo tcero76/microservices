@@ -2,9 +2,9 @@ package cl.microservices.resource.service.service
 
 import cl.microservices.postgres.services.services.PostgresPaymentService
 import cl.microservices.resource.service.adapter.PaymentToResponse
-import cl.microservices.resource.service.dto.CommandPayment
-import cl.microservices.resource.service.dto.CreditEntryResponse
-import cl.microservices.resource.service.dto.PaymentsResponse
+import cl.microservices.resource.service.common.dto.CommandPayment
+import cl.microservices.resource.service.common.dto.CreditEntryResponse
+import cl.microservices.resource.service.common.dto.PaymentsResponse
 import org.springframework.stereotype.Service
 import java.util.*
 

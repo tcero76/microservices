@@ -1,9 +1,8 @@
 package cl.microservices.resource.service.adapter
 
 import cl.microservices.postgres.model.CreditEntry
-import cl.microservices.postgres.model.Payments
-import cl.microservices.resource.service.dto.CreditEntryResponse
-import cl.microservices.resource.service.dto.PaymentsResponse
+import cl.microservices.resource.service.common.dto.CreditEntryResponse
+import cl.microservices.resource.service.common.dto.PaymentsResponse
 import java.util.UUID
 
 class PaymentToResponse {

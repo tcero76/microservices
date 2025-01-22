@@ -1,4 +1,4 @@
-package cl.microservices.security.config
+package cl.microservices.resource.service.config
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
@@ -10,17 +10,14 @@ import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator
-import org.springframework.security.oauth2.core.OAuth2TokenValidator
 import org.springframework.security.oauth2.jwt.*
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.web.SecurityFilterChain
 import java.security.KeyFactory
-import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
-import java.security.spec.PKCS8EncodedKeySpec
 import java.security.spec.X509EncodedKeySpec
 import java.util.*
 import java.util.stream.Collectors
@@ -36,20 +33,22 @@ class WebSecurity(val oAuth2ResourceServerProperties: OAuth2ResourceServerProper
     var publicKeyLocation:String = ""
     @Bean
     open fun configure(http:HttpSecurity):SecurityFilterChain  {
-        http.run {
-            authorizeHttpRequests {
+        http
+            .sessionManagement {
+                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            }
+            .cors { it.disable() }
+            .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.GET,"/actuator/**").permitAll()
                 it.requestMatchers(HttpMethod.GET, "/api/**").hasRole("USER")
                 it.requestMatchers(HttpMethod.POST, "/api/**").hasRole("USER")
-                cors { it.disable() }
             }
-            oauth2ResourceServer {
+            .oauth2ResourceServer {
                 it.jwt {
                     it.jwtAuthenticationConverter(jwtAuthenticationConverter())
                     it.decoder(jwtDecoder())
                 }
             }
-        }
         return http.build()
     }
     fun jwtAuthenticationConverter():JwtAuthenticationConverter {
@@ -65,7 +64,6 @@ class WebSecurity(val oAuth2ResourceServerProperties: OAuth2ResourceServerProper
     private inline fun <reified T> Any?.safeCast(): T? {
         return this as? T
     }
-
 
     private fun jwtDecoder(): JwtDecoder {
         return NimbusJwtDecoder.withPublicKey(loadPublicKey()).build()
