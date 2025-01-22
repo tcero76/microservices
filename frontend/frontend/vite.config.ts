@@ -15,11 +15,4 @@ export default defineConfig({
    host: true,
    origin: "http://0.0.0.0:5173",
   },
-  root: '.',
-  build: {
-    rollupOptions: {
-    input: './index.html',
-  },
-  outDir: '../frontend-service/src/main/resources/dist/',
-  },
 })
