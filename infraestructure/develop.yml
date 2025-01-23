@@ -32,13 +32,15 @@ services:
     ports:
       - 8086:8086
     environment:
-      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_AUTH_SERVER_REDIRECT_URI=http://localhost:8080/login/oauth2/code/auth-server
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_AUTH_SERVER_REDIRECT_URI=http://${EXTERNAL_HOST}:${EXTERNAL_PORT}/login/oauth2/code/auth-server
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_ISSUER_URI=http://auth-server:8000
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_TOKEN_URI=http://auth-server:8000/oauth2/token
-      - BFFWEB_CONFIG_WEB_CLIENT_BASE_URL=http://resource-server:8081/api
+      - BFFWEB_CONFIG_WEB_CLIENT_BASE_URL=http://${HOST_DOCKER_INTERNAL}:8081/api
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - EUREKA_URI=http://discovery-service:8761/eureka/
       - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
+      - EXTERNAL_PORT=${EXTERNAL_PORT}
+      - EXTERNAL_HOST=${EXTERNAL_HOST}
       - ENCRYPT_KEY=${ENCRYPT_KEY}
       - PUBLICKEY=${PUBLICKEY}
     depends_on:
@@ -82,7 +84,7 @@ services:
       - ../frontend/frontend/:/app
     command: npm run dev
     environment:
-      - VITE_APP_REDIRECT_URL=http://localhost:${EXTERNAL_PORT}
+      - VITE_APP_REDIRECT_URL=http://${EXTERNAL_HOST}:${EXTERNAL_PORT}
     networks:
       - ${GLOBAL_NETWORK}
   gateway:
@@ -95,10 +97,10 @@ services:
     environment:
       - SERVER_PORT=${EXTERNAL_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - GATEWAY_ROUTER_FRONTEND_URI=http://front:5173
+      - GATEWAY_ROUTER_FRONTEND_URI=http://${HOST_DOCKER_INTERNAL}:5173
       - GATEWAY_ROUTER_AUTHORIZATION_SERVER_URI=http://auth-server:8000
-      - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
-      - GATEWAY_ROUTER_BFFWEB_SERVICE_URI=http://bffweb-service:8086
+      - GATEWAY_ROUTER_RESOURCE_SERVER_URI=http://${HOST_DOCKER_INTERNAL}:8081
+      - GATEWAY_ROUTER_BFFWEB_SERVICE_URI=http://${HOST_DOCKER_INTERNAL}:8086
       - EUREKA_URI=http://discovery-service:8761/eureka/
     ports:
       - "${EXTERNAL_PORT}:${EXTERNAL_PORT}"
