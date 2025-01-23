@@ -1,6 +1,7 @@
 package cl.microservices.bbffweb.service.config
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
@@ -20,6 +21,10 @@ import org.springframework.security.web.SecurityFilterChain
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 class ConfigSecurity(val clientRegistrationRepository: ClientRegistrationRepository) {
     val log = KotlinLogging.logger {  }
+    @Value("\${external.host}")
+    var externalHost:String = ""
+    @Value("\${external.port}")
+    var externalPort:String = ""
     @Bean
     fun config(http:HttpSecurity):SecurityFilterChain {
         http
@@ -31,23 +36,23 @@ class ConfigSecurity(val clientRegistrationRepository: ClientRegistrationReposit
             .oauth2Client(Customizer.withDefaults())
             .oauth2Login {
                 it.clientRegistrationRepository(clientRegistrationRepository)
-                it.defaultSuccessUrl("http://localhost:8080/authorized")
+                it.defaultSuccessUrl("http://${externalHost}:${externalPort}/authorized")
 //                it.redirectionEndpoint(customRedirectionEndpoint())
             }
             .logout {
 
                 it.logoutUrl("/logout")
-                .logoutSuccessUrl("http://auth-server:8000/logout") // Redirigir después del logout
-                .invalidateHttpSession(true) // Invalidar la sesión HTTP
-                .clearAuthentication(true) // Limpiar la autenticación
-                .deleteCookies("JSESSIONID") // Eliminar cookies asociadas
+                .logoutSuccessUrl("http://auth-server:8000/logout")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
             }
         return http.build()
     }
     private fun customAuthorizationRequestResolver(): OAuth2AuthorizationRequestResolver? {
         val authorizationRequestResolver = DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization")
         authorizationRequestResolver.setAuthorizationRequestCustomizer {
-            it.redirectUri("http://localhost:8080/oauth2/authorization/auth-server")
+            it.redirectUri("http://${externalHost}:${externalPort}/oauth2/authorization/auth-server")
         }
 
         return authorizationRequestResolver
