@@ -19,7 +19,7 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 postgres-config:
-  url: ${POSTGRES_CONFIG_URL:jdbc:postgresql://localhost:5432/keycloak?currentSchema=payment}
+  url: ${POSTGRES_CONFIG_URL:jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment}
   username: keycloak
   password: keycloak
   schema: payment
