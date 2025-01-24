@@ -23,10 +23,8 @@ import java.util.function.Consumer
 @Configuration
 @EnableConfigurationProperties(BFFWebConfigData::class)
 class WebClientConfig (var bffWebConfigData: BFFWebConfigData) {
-
     @Value("\${security.default-client-registration-id}")
     private lateinit var defaultClientRegistrationId: String
-
     @Bean("webClientBuilder")
     fun webClientBuilder(clientRegistrationRepository: ClientRegistrationRepository?, oAuth2AuthorizedClientRepository: OAuth2AuthorizedClientRepository?): WebClient.Builder {
         val oauth2 = ServletOAuth2AuthorizedClientExchangeFilterFunction(clientRegistrationRepository, oAuth2AuthorizedClientRepository)
@@ -44,8 +42,7 @@ class WebClientConfig (var bffWebConfigData: BFFWebConfigData) {
                     .maxInMemorySize(bffWebConfigData.webClient.maxInMemorySize)
             })
     }
-
-        private val httpClient: HttpClient
+    private val httpClient: HttpClient
         get() = HttpClient.create()
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, bffWebConfigData.webClient.connectTimeoutMs)
             .doOnConnected(Consumer<reactor.netty.Connection> { connection: reactor.netty.Connection ->
@@ -61,5 +58,5 @@ class WebClientConfig (var bffWebConfigData: BFFWebConfigData) {
                         TimeUnit.MILLISECONDS
                     )
                 )
-            })
+    })
 }

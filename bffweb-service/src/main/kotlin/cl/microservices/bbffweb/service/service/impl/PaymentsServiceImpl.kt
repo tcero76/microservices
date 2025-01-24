@@ -27,7 +27,6 @@ import java.util.function.Predicate
 class PaymentsServiceImpl(
         val webClientBuilder: WebClient.Builder
 ) : PaymentsService {
-
     @Autowired
     public var webClientConfigData: BFFWebConfigData = BFFWebConfigData()
     override fun getPayment(): CreditEntryResponse {
@@ -36,7 +35,6 @@ class PaymentsServiceImpl(
             .log()
             .block() ?: CreditEntryResponse(UUID.fromString("").toString(), 0)
     }
-
     private fun getWebClient(): WebClient.ResponseSpec  {
         return webClientBuilder
             .build()

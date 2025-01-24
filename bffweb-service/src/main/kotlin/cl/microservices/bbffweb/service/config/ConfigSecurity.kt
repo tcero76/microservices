@@ -37,10 +37,8 @@ class ConfigSecurity(val clientRegistrationRepository: ClientRegistrationReposit
             .oauth2Login {
                 it.clientRegistrationRepository(clientRegistrationRepository)
                 it.defaultSuccessUrl("http://${externalHost}:${externalPort}/authorized")
-//                it.redirectionEndpoint(customRedirectionEndpoint())
             }
             .logout {
-
                 it.logoutUrl("/logout")
                 .logoutSuccessUrl("http://auth-server:8000/logout")
                 .invalidateHttpSession(true)
@@ -48,13 +46,5 @@ class ConfigSecurity(val clientRegistrationRepository: ClientRegistrationReposit
                 .deleteCookies("JSESSIONID")
             }
         return http.build()
-    }
-    private fun customAuthorizationRequestResolver(): OAuth2AuthorizationRequestResolver? {
-        val authorizationRequestResolver = DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization")
-        authorizationRequestResolver.setAuthorizationRequestCustomizer {
-            it.redirectUri("http://${externalHost}:${externalPort}/oauth2/authorization/auth-server")
-        }
-
-        return authorizationRequestResolver
     }
 }
