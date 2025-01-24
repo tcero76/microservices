@@ -26,11 +26,12 @@ export type TypeToken = {
   scope: string
 }
 
-const AUTHORIZATION = "Basic " + window.btoa('client1:myClientService')
+const AUTHORIZATION = "Basic " + window.btoa('client1')
 
 export function requestTokens(code:string):Promise<AxiosResponse<TypeToken>> {
     const data = {
         "grant_type": "authorization_code",
+        "client_id": "client1",
         "code": code,
         "code_verifier": localStorage.getItem("codeVerifier"),
         "redirect_uri":`${import.meta.env.VITE_APP_REDIRECT_URL}/authorized`
@@ -40,7 +41,6 @@ export function requestTokens(code:string):Promise<AxiosResponse<TypeToken>> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Authorization': AUTHORIZATION
       },
       data,
     })
@@ -129,7 +129,6 @@ const axiosRefresh = ():AxiosInstance => {
             method: 'POST',
             headers : {
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-              'Authorization': AUTHORIZATION
             },
             data:{
               "grant_type": "refresh_token",
@@ -160,8 +159,18 @@ export function savePayment(price:number):Promise<AxiosResponse<SavePaymentRespo
     },
     data: {
       price,
-      items: [{ quantity:20, price:10, subTotal:price }]
+      items: [{ productId: "d215b5f8-0249-4dc5-89a3-51fd148cfb25", quantity:1, price:1, subTotal:price }]
     }
   }
-  return axiosRefresh().request(config)
+  return axios(config)
+}
+
+export function postUserPassword(username:string, password:string):any {
+  return axios({
+    method: 'POST',
+    url: `${import.meta.env.VITE_APP_REDIRECT_URL}/loginForm?username=${username}&password=${password}`,
+    headers: {
+        "Content-Type":"application/json",
+    }
+  })
 }

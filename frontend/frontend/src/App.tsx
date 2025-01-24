@@ -1,11 +1,8 @@
 import {  } from 'react'
-import useCodeChallenge, { type typeUseCodeChallenge } from '../src/hooks/useCodeCallenge'
-import { getAuthCode } from '../src/http'
 
 function App() {
-  const {stateValue, codeChallengeValue }:typeUseCodeChallenge = useCodeChallenge(30)
   return (<div>
-            <a href={getAuthCode(stateValue, codeChallengeValue)}>Ingresar</a>
+            <a href="/oauth2/authorization/auth-server">Ingresar</a>
           </div>
   )
 }

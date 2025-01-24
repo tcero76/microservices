@@ -22,7 +22,7 @@ export const authSlice = createSlice({
       state.creditEntry = action.payload.credit
     },
     saveAuthentication(_, action:PayloadAction<TypeToken>) {
-      if ( action.payload.access_token != null) {
+      if (action.payload.access_token != null) {
         localStorage.setItem('access_token', action.payload.access_token)
         localStorage.setItem('refresh_token', action.payload.refresh_token)
         window.location.href = window.location.origin + window.location.pathname;
