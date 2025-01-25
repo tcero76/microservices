@@ -1,0 +1,42 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          auth-server:
+            client-id: bffweb-service
+            client-secret: bffweb-service-secret
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/auth-server
+            scope:
+            - openid
+            - read
+        provider:
+          auth-server:
+            authorization-uri: http://auth-server:8000/oauth2/authorize
+            token-uri: http://auth-server:8000/oauth2/token
+            jwk-set-uri: http://auth-server:8000/oauth2/jwks
+server:
+  port: 8086
+external:
+  port: ${EXTERNAL_PORT}
+  host: ${EXTERNAL_HOST}
+bffweb-config:
+  web-client:
+    base-url: http://localhost:8081/api
+    content-type: 'application/vnd.api.v1+json'
+    accept-type: 'application/vnd.api.v1+json'
+    max-in-memory-size: 10485760 # 10MB
+    connect-timeout-ms: 10000
+    read-timeout-ms: 10000
+    write-timeout-ms: 10000
+  post-payment:
+    method: POST
+    uri: "/payments"
+    accept: 'application/vnd.api.v1+json'
+  query-payment:
+    method: GET
+    uri: "/payments"
+    accept: 'application/vnd.api.v1+json'
+security:
+  default-client-registration-id: auth-server
