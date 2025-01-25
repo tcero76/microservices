@@ -41,7 +41,7 @@ gateway-router:
       - /api/payments
       - /login
       - /logout
-    uri: http://localhost:8086
+    uri: http://bffweb-service:8086
 management:
   endpoints:
     web:
