@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, type AxiosResponse} from 'axios'
+import axios, { type AxiosResponse} from 'axios'
 
  export function getAuthCode(state:string, codeChallenge:string) {
     var authorizationURL = `${import.meta.env.VITE_APP_REDIRECT_URL}/oauth2/authorize`;
@@ -25,8 +25,6 @@ export type TypeToken = {
   expires_in: number
   scope: string
 }
-
-const AUTHORIZATION = "Basic " + window.btoa('client1')
 
 export function requestTokens(code:string):Promise<AxiosResponse<TypeToken>> {
     const data = {
@@ -113,40 +111,6 @@ export async function getLogout():Promise<AxiosResponse<boolean, any>> {
 
 export type SavePaymentResponse = {
   credit: number
-}
-
-const axiosRefresh = ():AxiosInstance => {
-  const axiosInstance = axios.create()
-  axiosInstance.interceptors.response.use(
-    response => response,
-    async (error:any) => {
-      const originalRequest = error.config;
-      if (error.response.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
-        try {
-          const response = await axios({
-            url: `${import.meta.env.VITE_APP_REDIRECT_URL}/oauth2/token`,
-            method: 'POST',
-            headers : {
-              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            },
-            data:{
-              "grant_type": "refresh_token",
-              "refresh_token": localStorage.getItem("refresh_token"),
-          }})
-          await localStorage.setItem('access_token', response.data.access_token);
-          await localStorage.setItem('refresh_token', response.data.refresh_token);
-          originalRequest.headers['Authorization'] = `Bearer ${response.data.access_token}`;
-          return axiosInstance(originalRequest);
-        } catch (refreshError) {
-          console.error('Error al refrescar el token', refreshError);
-          return Promise.reject(refreshError);
-        }
-      }
-      return Promise.reject(error);
-    }
-  );
-  return axiosInstance
 }
 
 export function savePayment(price:number):Promise<AxiosResponse<SavePaymentResponse>> {
