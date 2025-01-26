@@ -28,12 +28,9 @@ dependencyManagement {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.2")
     }
 }
-val springProfiles:String? = System.getenv("SPRING_PROFILES_ACTIVE")
 dependencies {
-    if(springProfiles.equals("prod")) {
-        implementation(libs.spring.cloud.discovery.client)
-        implementation(libs.spring.cloud.config.client)
-    }
+    implementation(libs.spring.cloud.discovery.client)
+    implementation(libs.spring.cloud.config.client)
     implementation(libs.gateway)
     implementation(libs.kotlin.logging)
     implementation(libs.spring.boot.actuator)
