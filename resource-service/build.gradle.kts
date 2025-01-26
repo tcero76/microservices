@@ -22,7 +22,6 @@ tasks {
         useJUnitPlatform()
     }
 }
-val springProfiles:String? = System.getenv("SPRING_PROFILES_ACTIVE")
 dependencies {
     implementation(libs.spring.boot.oauth2.server)
     implementation(libs.spring.boot.devtools)
@@ -36,10 +35,8 @@ dependencies {
     implementation(project(":postgres:postgres-model"))
     implementation(project(":postgres:postgres-services"))
     implementation(project(":resource-service-common"))
-    if(springProfiles.equals("prod")) {
-        implementation(libs.spring.cloud.config.client)
-        implementation(libs.spring.cloud.discovery.client)
-    }
+    implementation(libs.spring.cloud.config.client)
+    implementation(libs.spring.cloud.discovery.client)
     testImplementation(libs.testcontainer.postgres)
     testImplementation(libs.testcontainer.keycloak)
     testImplementation(libs.spring.test)
