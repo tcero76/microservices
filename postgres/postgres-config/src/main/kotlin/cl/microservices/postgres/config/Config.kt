@@ -12,7 +12,6 @@ import javax.sql.DataSource
 @Configuration
 @EnableConfigurationProperties(PostGresConfigData::class)
 class Config(val postGresConfigData: PostGresConfigData) {
-
     private val log = KotlinLogging.logger {}
     @Bean
     fun dataSource(): DataSource {
