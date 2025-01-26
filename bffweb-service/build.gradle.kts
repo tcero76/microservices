@@ -22,13 +22,14 @@ tasks {
         useJUnitPlatform()
     }
 }
-
 dependencies {
     implementation(libs.spring.boot.web)
     implementation(libs.spring.boot.oauth2.client)
     implementation(libs.spring.boot.webflux)
     implementation(libs.spring.boot.validation)
     implementation(libs.kotlin.logging)
+    implementation(libs.spring.cloud.config.client)
+    implementation(libs.spring.cloud.discovery.client)
     implementation(project(":app-config-data"))
     implementation(project(":resource-service-common"))
 }

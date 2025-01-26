@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: bffweb-service
   security:
     oauth2:
       client:
