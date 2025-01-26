@@ -99,9 +99,9 @@ services:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - GATEWAY_ROUTER_FRONTEND_URI=http://${HOST_DOCKER_INTERNAL}:5173
       - GATEWAY_ROUTER_AUTHORIZATION_SERVER_URI=http://auth-server:8000
-      - GATEWAY_ROUTER_RESOURCE_SERVER_URI=http://${HOST_DOCKER_INTERNAL}:8081
-      - GATEWAY_ROUTER_BFFWEB_SERVICE_URI=http://${HOST_DOCKER_INTERNAL}:8086
-      - EUREKA_URI=http://discovery-service:8761/eureka/
+      - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
+      - GATEWAY_ROUTER_BFFWEB_SERVICE_URI=lb://BFFWEB-SERVICE
+      - EUREKA_URI=http://${HOST_DOCKER_INTERNAL}:8761/eureka/
     ports:
       - "${EXTERNAL_PORT}:${EXTERNAL_PORT}"
     networks:
@@ -111,14 +111,26 @@ services:
   discovery:
     container_name: discovery
     profiles:
-      - prod
+      - dev
     hostname: discovery-service
+    volumes:
+      - "./docker-logs:/workspace/discovery-service/logs"
+    ports:
+      - 8761:8761
     networks:
       - ${GLOBAL_NETWORK}
   config-server:
     container_name: config-server
     profiles:
-      - prod
+      - dev
+    tty: true
+    stdin_open: true
     hostname: config-server
+    ports:
+      - 8888:8888
+    volumes:
+      - "./docker-logs:/workspace/config-server/logs"
+    environment:
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
     networks:
       - ${GLOBAL_NETWORK}
