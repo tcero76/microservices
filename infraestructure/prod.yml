@@ -2,6 +2,8 @@ version: '3.8'
 services:
   auth-server:
     container_name: authorizationserver
+    profiles:
+      - prod
     hostname: auth-server
     tty: true
     stdin_open: true
@@ -11,24 +13,56 @@ services:
       - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - PORT=8000
       - EXTERNAL_PORT=${EXTERNAL_PORT}
+      - EXTERNAL_HOST=${EXTERNAL_HOST}
       - PUBLICKEY=${PUBLICKEY}
       - PRIVATEKEY=${PRIVATEKEY}
     networks:
       - ${GLOBAL_NETWORK}
-  resource-server:
-    container_name: resourceserver
+  bffweb-service:
+    container_name: bffweb-service
+    profiles:
+      - prod
     tty: true
     stdin_open: true
     user: root
+    entrypoint: ["check-config-server-started.sh"]
     volumes:
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
+      - "./docker-logs:/workspace/bffweb-service/logs"
+    ports:
+      - 8086:8086
+    environment:
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_AUTH_SERVER_REDIRECT_URI=http://${EXTERNAL_HOST}:${EXTERNAL_PORT}/login/oauth2/code/auth-server
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_ISSUER_URI=http://auth-server:8000
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_TOKEN_URI=http://auth-server:8000/oauth2/token
+      - BFFWEB_CONFIG_WEB_CLIENT_BASE_URL=http://${HOST_DOCKER_INTERNAL}:8081/api
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - EUREKA_URI=http://discovery-service:8761/eureka/
+      - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
+      - EXTERNAL_PORT=${EXTERNAL_PORT}
+      - EXTERNAL_HOST=${EXTERNAL_HOST}
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
+      - PUBLICKEY=${PUBLICKEY}
+    depends_on:
+      - postgres
+    networks:
+      - ${GLOBAL_NETWORK}
+  resource-server:
+    container_name: resourceserver
+    profiles:
+      - prod
+    tty: true
+    stdin_open: true
+    user: root
+    entrypoint: ["check-config-server-started.sh"]
+    volumes:
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
       - "./docker-logs:/workspace/resource-service/logs"
     ports:
       - 8081:8081
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - EUREKA_URI=http://discovery-service:8761/eureka/
-      - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
       - ENCRYPT_KEY=${ENCRYPT_KEY}
       - PUBLICKEY=${PUBLICKEY}
     depends_on:
@@ -38,6 +72,8 @@ services:
       - ${GLOBAL_NETWORK}
   gateway:
     container_name: gateway
+    profiles:
+      - prod
     tty: true
     stdin_open: true
     user: root
@@ -58,38 +94,43 @@ services:
   front:
     image: tcero76/frontend-service:${VERSION}
     container_name: front
+    profiles:
+      - prod
     tty: true
     stdin_open: true
     hostname: front
     ports:
       - 8082:8082
     user: root
-    entrypoint: ["check-config-server-started.sh"]
-    volumes:
-      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
     environment:
-      - VITE_APP_REDIRECT_URL=http://localhost:${EXTERNAL_PORT}
+      - VITE_APP_REDIRECT_URL=http://${EXTERNAL_HOST}:${EXTERNAL_PORT}
     networks:
       - ${GLOBAL_NETWORK}
   discovery:
     container_name: discovery
+    profiles:
+      - prod
     tty: true
     stdin_open: true
     hostname: discovery-service
+    volumes:
+      - "./docker-logs:/workspace/discovery-service/logs"
     ports:
       - 8761:8761
     networks:
       - ${GLOBAL_NETWORK}
   config-server:
     container_name: config-server
+    profiles:
+      - prod
     tty: true
     stdin_open: true
+    ports:
+      - 8888:8888
     volumes:
       - "./docker-logs:/workspace/config-server/logs"
     hostname: config-server
     environment:
       - ENCRYPT_KEY=${ENCRYPT_KEY}
-    ports:
-      - 8888:8888
     networks:
       - ${GLOBAL_NETWORK}
