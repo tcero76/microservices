@@ -5,7 +5,9 @@ spring:
     config:
       label: master
       name: config-server-gateway_service
+      username: root
+      password: '{cipher}cafde46440ddca6e42bbcbbbe8f38cc813df22aa1d466a68b189f9460a86db3fleonardo@Casa'
   config:
-    import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://root:s3cr3t@config-server:8888}
+    import: configserver:http://config-server:8888
 log:
   app-name: gateway-service
