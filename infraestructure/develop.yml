@@ -62,7 +62,6 @@ services:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - POSTGRES_CONFIG_URL=jdbc:postgresql://postgres:5432/keycloak?currentSchema=payment
       - EUREKA_URI=http://discovery-service:8761/eureka/
-      - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
       - ENCRYPT_KEY=${ENCRYPT_KEY}
       - PUBLICKEY=${PUBLICKEY}
     depends_on:
