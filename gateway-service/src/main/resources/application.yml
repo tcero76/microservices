@@ -2,12 +2,14 @@ spring:
   application:
     name: gateway-service
   cloud:
+    bootstrap:
+      enabled: true
     config:
       label: master
       name: config-server-gateway_service
       username: root
-      password: '{cipher}cafde46440ddca6e42bbcbbbe8f38cc813df22aa1d466a68b189f9460a86db3fleonardo@Casa'
+      password: '{cipher}2f163d8122f88bf7d4b3069fec9ccd2419b13fd137ea11e0067027af06b684c4'
   config:
-    import: configserver:http://config-server:8888
+    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8888}
 log:
   app-name: gateway-service

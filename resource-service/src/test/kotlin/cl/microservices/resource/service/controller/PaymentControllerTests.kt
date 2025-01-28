@@ -1,7 +1,7 @@
 package cl.microservices.resource.service.controller
 
 import cl.microservices.resource.service.common.dto.CommandPayment
-import cl.microservices.resource.service.dto.OrderItemDto
+import cl.microservices.resource.service.common.dto.OrderItemDto
 import cl.microservices.resource.service.common.dto.PaymentsResponse
 import cl.microservices.resource.service.service.PaymentService
 import com.fasterxml.jackson.databind.ObjectMapper

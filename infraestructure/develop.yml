@@ -25,9 +25,9 @@ services:
     tty: true
     stdin_open: true
     user: root
-    entrypoint: ["check-auth-server-started.sh"]
+    entrypoint: ["check-config-server-started.sh"]
     volumes:
-      - "./check-auth-server-started.sh:/usr/local/bin/check-auth-server-started.sh"
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
       - "./docker-logs:/workspace/bffweb-service/logs"
     ports:
       - 8086:8086
@@ -38,11 +38,11 @@ services:
       - BFFWEB_CONFIG_WEB_CLIENT_BASE_URL=http://${HOST_DOCKER_INTERNAL}:8081/api
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - EUREKA_URI=http://discovery-service:8761/eureka/
-      - SPRING_CONFIG_IMPORT=${SPRING_CONFIG_IMPORT}
       - EXTERNAL_PORT=${EXTERNAL_PORT}
       - EXTERNAL_HOST=${EXTERNAL_HOST}
       - ENCRYPT_KEY=${ENCRYPT_KEY}
       - PUBLICKEY=${PUBLICKEY}
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
     depends_on:
       - postgres
     networks:
@@ -54,7 +54,9 @@ services:
     tty: true
     stdin_open: true
     user: root
+    entrypoint: ["check-config-server-started.sh"]
     volumes:
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
       - "./docker-logs:/workspace/resource-service/logs"
     ports:
       - 8081:8081
@@ -64,6 +66,7 @@ services:
       - EUREKA_URI=http://discovery-service:8761/eureka/
       - ENCRYPT_KEY=${ENCRYPT_KEY}
       - PUBLICKEY=${PUBLICKEY}
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
     depends_on:
       - postgres
     networks:
@@ -101,6 +104,11 @@ services:
       - GATEWAY_ROUTER_RESOURCE_SERVER_URI=lb://RESOURCE-SERVICE
       - GATEWAY_ROUTER_BFFWEB_SERVICE_URI=lb://BFFWEB-SERVICE
       - EUREKA_URI=http://${HOST_DOCKER_INTERNAL}:8761/eureka/
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+    entrypoint: ["check-config-server-started.sh"]
+    volumes:
+      - "./check-config-server-started.sh:/usr/local/bin/check-config-server-started.sh"
     ports:
       - "${EXTERNAL_PORT}:${EXTERNAL_PORT}"
     networks:

@@ -18,11 +18,6 @@ postgres-config:
   database-platform: org.hibernate.dialect.PostgreSQL9Dialect
   show-sql: true
   stringtype: unspecified
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
 log:
   app-name: resource-service
 public-key-location: ${PUBLICKEY}
@@ -31,3 +26,8 @@ logging:
     org:
       springframework:
         security: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

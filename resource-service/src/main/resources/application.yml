@@ -10,7 +10,7 @@ spring:
       username: root
       password: '{cipher}63431c5252312f38049727f106137879cf3ca7abbdfabf0bfc4f11e3288d8929'
   config:
-    import: configserver:http://localhost:8888
+    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8888}
 
 eureka:
   client:

@@ -31,6 +31,7 @@ tasks {
 dependencies {
     implementation(libs.spring.cloud.discovery.server)
     implementation(libs.spring.boot.web)
+    implementation(libs.spring.boot.actuator)
     implementation(enforcedPlatform("org.springframework.cloud:spring-cloud-dependencies:2023.0.2"))
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }

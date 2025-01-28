@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 import java.util.function.Function
-
-
 @Configuration
 @EnableConfigurationProperties(GatewayConfigData::class)
 class Router @Autowired constructor(private var gatewayConfigData: GatewayConfigData,
@@ -25,7 +23,6 @@ class Router @Autowired constructor(private var gatewayConfigData: GatewayConfig
             .route("Authorization-server", Function { it
                 .path(*gatewayConfigData.authorizationServer.path.toTypedArray())
                 .uri(gatewayConfigData.authorizationServer.uri)
-
             })
             .route("resource-server", Function { it
                 .path(*gatewayConfigData.resourceServer.path.toTypedArray())

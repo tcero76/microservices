@@ -3,11 +3,6 @@ server:
   forward-headers-strategy: framework
 container:
   hostname: ${HOSTNAME:auth-server}
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
 external:
   port: ${EXTERNAL_PORT}
   host: ${EXTERNAL_HOST}
