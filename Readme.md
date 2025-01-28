@@ -4,7 +4,7 @@
 
 Proyecto inicial de sistema web hecho con microservicios. Sólo tiene una landing page y un logging, pero hecho en forma distribuida. Está hecho en Kotlin y React-typescript
 
-![Topologia del proyecto](./img/topologia.gif)
+![Topologia del proyecto](./img/topologia.svg)
 # Características
 
 - Testing con pruebas unitarias e integradas [resource-service](https://github.com/tcero76/microservices/tree/master/resource-service/src/test/kotlin/cl/microservices/resource/service) y [postgres](https://github.com/tcero76/microservices/tree/master/postgres/postgres-services/src/test/kotlin/cl/microservices/postgres/services)
