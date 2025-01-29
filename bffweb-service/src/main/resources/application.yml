@@ -7,10 +7,8 @@ spring:
     config:
       label: master
       name: config-server-bffweb_service
-      username: root
-      password: '{cipher}e9287b2cb90b59c12135d7db3ed756f546e4fac22b9333ec017c03a9bc6c76bd'
   config:
-    import: ${SPRING_CONFIG_IMPORT:configserver:http://localhost:8888}
+    import: ${SPRING_CONFIG_IMPORT:optional:configserver:http://localhost:8888}
 
 eureka:
   client:

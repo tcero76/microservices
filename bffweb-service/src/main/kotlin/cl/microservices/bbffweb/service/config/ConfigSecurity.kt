@@ -30,7 +30,9 @@ class ConfigSecurity(val clientRegistrationRepository: ClientRegistrationReposit
         http
             .csrf { it.disable() }
             .authorizeHttpRequests {
-                it.anyRequest().authenticated()
+                it
+                    .requestMatchers("/actuator/**").permitAll()
+                    .anyRequest().authenticated()
             }
             .cors { it.disable() }
             .oauth2Client(Customizer.withDefaults())
