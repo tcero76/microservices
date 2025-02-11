@@ -1,7 +1,7 @@
 version: '3'
 services:
   postgres:
-    image: postgres:16.6
+    image: postgres:${POSTGRES_VERSION}
     container_name: postgres
     tty: true
     stdin_open: true
