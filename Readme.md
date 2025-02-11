@@ -1,26 +1,31 @@
 ![Topologia del proyecto](./img/demo.gif)
 
 # Resumen
-
-Proyecto inicial de sistema web hecho con microservicios. Sólo tiene una landing page y un logging, pero hecho en forma distribuida. Está hecho en Kotlin y React-typescript
-
-![Topologia del proyecto](./img/topologia.svg)
+Template para microservicios. Tiene un loggin OAuth2 y landing page, y está listo para crear nuevos microservicios.
+Está programado en Kotlin y React-typescript. Adicionalmente, está listo para registrar logs en elasticsearch y monitorear variables con Prometheus.
 # Características
-
+- Patrón BFF para ocultar Refresh Token  y Access Token generados en el proceso de autenticación.
 - Testing con pruebas unitarias e integradas [resource-service](https://github.com/tcero76/microservices/tree/master/resource-service/src/test/kotlin/cl/microservices/resource/service) y [postgres](https://github.com/tcero76/microservices/tree/master/postgres/postgres-services/src/test/kotlin/cl/microservices/postgres/services)
-- Código agrupado en módulos. Modelos relacionales se comparten entre los módulos que lo requieren.
 - Bastión de seguridad OAuth2. [auth-server](https://github.com/tcero76/microservices/tree/master/authorization-server-service)
 - Programado en Kotlin y manejado con Gradle.
+- Código agrupado en módulos. Modelos relacionales se comparten entre los módulos que lo requieren.
 - Monitoreo Prometheus
 - Loggins acumulados en Elasticstack
 
+![Topologia del proyecto](./img/topologia.svg)
+
 # Arranque
+
+Debido a la configuración de seguridad que requiere oauth2-client se debe agregar la siguiente registro en el archivo `/etc/hosts`:
+```
+127.0.1.1   auth-server
+```
 
 ## Perfil Dev
 
 ### Instrucciones
 
-Este perfil se configura con las siguientes variables de entorno creando el archivo siguiente ```infraestructura/.env```:
+Este perfil se configura con las siguientes variables de entorno creando el archivo siguiente ```./infraestructura/.env```:
 ```
 #Variables
 GLOBAL_NETWORK=application
@@ -46,13 +51,9 @@ SPRING_PROFILES_ACTIVE=dev
 ## Perfil Prod
 Perfil de producción que despliega los servicios completos.
 
-Debido a la configuración de seguridad que requiere el Authorization Server se debe agregar la siguiente registro en el archivo `/etc/hosts`:
-```
-127.0.1.1   auth-server
-```
 
 ### Instrucciones
-Este perfil se configura con las siguientes variables de entorno creando el archivo siguiente ```infraestructura/.env```:
+Este perfil se configura con las siguientes variables de entorno creando el archivo siguiente ```./infraestructura/.env```:
 ```
 #Variables
 GLOBAL_NETWORK=application

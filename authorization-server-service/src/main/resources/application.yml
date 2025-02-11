@@ -2,7 +2,7 @@ server:
   port: ${PORT:8000}
   forward-headers-strategy: framework
 container:
-  hostname: ${HOSTNAME:auth-server}
+  hostname: auth-server
 external:
   port: ${EXTERNAL_PORT}
   host: ${EXTERNAL_HOST}

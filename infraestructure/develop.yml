@@ -16,6 +16,7 @@ services:
       - EXTERNAL_HOST=${EXTERNAL_HOST}
       - PUBLICKEY=${PUBLICKEY}
       - PRIVATEKEY=${PRIVATEKEY}
+      - CONTAINER_HOSTNAME=auth-server
     networks:
       - ${GLOBAL_NETWORK}
   bffweb-service:
@@ -33,6 +34,7 @@ services:
       - 8086:8086
     environment:
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_AUTH_SERVER_REDIRECT_URI=http://${EXTERNAL_HOST}:${EXTERNAL_PORT}/login/oauth2/code/auth-server
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_AUTHORIZATION_URI=http://auth-server:8000/oauth2/authorize
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_ISSUER_URI=http://auth-server:8000
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_AUTH_SERVER_TOKEN_URI=http://auth-server:8000/oauth2/token
       - BFFWEB_CONFIG_WEB_CLIENT_BASE_URL=http://${HOST_DOCKER_INTERNAL}:8081/api
