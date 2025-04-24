@@ -3,6 +3,9 @@
 # Resumen
 Template para microservicios. Tiene un loggin OAuth2 y landing page, y está listo para crear nuevos microservicios.
 Está programado en Kotlin y React-typescript. Adicionalmente, está listo para registrar logs en elasticsearch y monitorear variables con Prometheus.
+# ¿Porqué una organización le debería llamar la atención este demo?
+ Porque muchas organizaciones necesitan distribuir sus servicios, pero se enfrentan a duras barreras para dar el paso ya que esto involucra conocer manejo de dependencias (gradle o maven), prácticas SOLID, patrones de microservicios, seguridad (OAuth2), criptografía, etc.\
+ Consideré valioso este demo porque es un pie inicial para implementar otros patrones más simples, pero requeridos en la industria como CQRS, Outbox, Saga, etc.
 # Características
 - Patrón BFF para ocultar Refresh Token  y Access Token generados en el proceso de autenticación.
 - Testing con pruebas unitarias e integradas [resource-service](https://github.com/tcero76/microservices/tree/master/resource-service/src/test/kotlin/cl/microservices/resource/service) y [postgres](https://github.com/tcero76/microservices/tree/master/postgres/postgres-services/src/test/kotlin/cl/microservices/postgres/services)
